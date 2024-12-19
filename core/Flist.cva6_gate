@@ -27,12 +27,35 @@ ${CVA6_REPO_DIR}/core/include/instr_tracer_pkg.sv
 ${CVA6_REPO_DIR}/core/include/build_config_pkg.sv
 
 //CVXIF
+${CVA6_REPO_DIR}/core/cvxif_compressed_if_driver.sv
+${CVA6_REPO_DIR}/core/cvxif_issue_register_commit_if_driver.sv
+
+//CVXIF - Cryptography Accelerator
+//${CVA6_REPO_DIR}/core/crypto/include/crypto_instr_pkg.sv
+//${CVA6_REPO_DIR}/core/cvxif_fu.sv
+//${CVA6_REPO_DIR}/core/crypto/instr_decoder.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_sboxes.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_aes_mix_columns.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_aes32.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_aes64.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_brev8.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_pack.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_sha256.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_sha512.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_sm3.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_sm4.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_xperm.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_zip.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_scalar_fu.sv
+//${CVA6_REPO_DIR}/core/crypto/crypto_coprocessor.sv
+
+//CVXIF - CVXIF Example Accelerator
 ${CVA6_REPO_DIR}/core/cvxif_example/include/cvxif_instr_pkg.sv
-${CVA6_REPO_DIR}/core/cvxif_example/cvxif_example_coprocessor.sv
-${CVA6_REPO_DIR}/core/cvxif_example/instr_decoder.sv
+${CVA6_REPO_DIR}/core/cvxif_fu.sv
 ${CVA6_REPO_DIR}/core/cvxif_example/compressed_instr_decoder.sv
 ${CVA6_REPO_DIR}/core/cvxif_example/copro_alu.sv
-
+${CVA6_REPO_DIR}/core/cvxif_example/cvxif_example_coprocessor.sv
+${CVA6_REPO_DIR}/core/cvxif_example/instr_decoder.sv
 
 // Common Cells
 ${CVA6_REPO_DIR}/vendor/pulp-platform/common_cells/src/cf_math_pkg.sv
@@ -62,7 +85,7 @@ ${CVA6_REPO_DIR}/pd/synth/cva6_${TARGET_CFG}_synth.v
 # Dedicated to black box in caches, cv32a65x only
 ${CVA6_REPO_DIR}/pd/synth/tc_sram_wrapper_256_64_00000008_00000001_00000001_none_0.sv
 ${CVA6_REPO_DIR}/pd/synth/hpdcache_sram_wbyteenable_1rw_00000007_00000040_00000080.sv 
-${CVA6_REPO_DIR}/pd/synth/hpdcache_sram_1rw_00000006_0000001c_00000040.sv
+${CVA6_REPO_DIR}/pd/synth/hpdcache_sram_1rw_00000006_0000001a_00000040.sv
 
 ${CVA6_REPO_DIR}/common/local/util/tc_sram_wrapper.sv
 ${CVA6_REPO_DIR}/common/local/util/tc_sram_wrapper_cache_techno.sv

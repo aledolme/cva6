@@ -46,6 +46,9 @@ class cvxif_custom_instr extends riscv_custom_instr;
          CUS_S_ADD:     asm_str = $sformatf("%0s %0s, %0s, %0s", asm_str, rd.name(),  rs1.name(),  rs2.name());
          CUS_U_ADD:     asm_str = $sformatf("%0s %0s, %0s, %0s", asm_str, rd.name(),  rs1.name(),  rs2.name());
          CUS_EXC:       asm_str = $sformatf("%0s %0s",      asm_str, rs1.name());
+         CUS_XOR:       asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());
+         CUS_OR:        asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());
+         CUS_AND:       asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());
       endcase
       comment = {get_instr_name(), " ", comment};
       if (comment != "") begin
@@ -60,7 +63,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
 
    function bit [6:0] get_opcode();
       case (instr_name) inside
-         {CUS_ADD, CUS_ADD_MULTI, CUS_ADD_RS3, CUS_NOP, CUS_U_ADD, CUS_S_ADD, CUS_EXC}   : get_opcode = 7'b1111011;
+         {CUS_ADD, CUS_ADD_MULTI, CUS_ADD_RS3, CUS_NOP, CUS_U_ADD, CUS_S_ADD, CUS_EXC, CUS_XOR, CUS_AND, CUS_OR}   : get_opcode = 7'b1111011;
          default : `uvm_fatal(`gfn, $sformatf("Unsupported instruction %0s", instr_name.name()))
       endcase
    endfunction
@@ -68,7 +71,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
    virtual function bit [2:0] get_func3();
       case (instr_name) inside
          CUS_ADD_MULTI, CUS_ADD_RS3, CUS_U_ADD, CUS_S_ADD        : get_func3 = 3'b000;
-         CUS_ADD                                                 : get_func3 = 3'b001;
+         CUS_ADD, CUS_XOR, CUS_AND, CUS_OR                       : get_func3 = 3'b001;
          CUS_EXC                                                 : get_func3 = 3'b010;
       endcase
    endfunction
@@ -81,6 +84,9 @@ class cvxif_custom_instr extends riscv_custom_instr;
          CUS_U_ADD                  : get_func7 = 7'b0000010;
          CUS_S_ADD                  : get_func7 = 7'b0000110;
          CUS_EXC                    : get_func7 = 7'b1100000;
+         CUS_XOR                    : get_func7 = 7'b0000101;
+         CUS_OR                     : get_func7 = 7'b0000110;
+         CUS_AND                    : get_func7 = 7'b0000111;
       endcase
    endfunction
 
@@ -120,7 +126,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
       return cfg_cva6.enable_x_extension && (
              instr_name inside {
                 CUS_ADD, CUS_ADD_MULTI, CUS_NOP, CUS_ADD_RS3,
-                CUS_EXC, CUS_U_ADD, CUS_S_ADD
+                CUS_EXC, CUS_U_ADD, CUS_S_ADD, CUS_AND, CUS_OR, CUS_XOR
                                });
    endfunction
 

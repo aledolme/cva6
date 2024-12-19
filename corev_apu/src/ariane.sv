@@ -108,8 +108,30 @@ module ariane import ariane_pkg::*; #(
     .noc_resp_i           ( noc_resp_i                )
   );
 
-  if (CVA6Cfg.CvxifEn) begin : gen_example_coprocessor
-    cvxif_example_coprocessor #(
+  if (CVA6Cfg.CvxifEn) begin : cvxif_example_coprocessor
+  //  crypto_coprocessor #(
+  //    .NrRgprPorts (CVA6Cfg.NrRgprPorts),
+  //    .XLEN (CVA6Cfg.XLEN),
+  //    .readregflags_t (readregflags_t),
+  //    .writeregflags_t (writeregflags_t),
+  //    .id_t (id_t),
+  //    .hartid_t (hartid_t),
+  //    .x_compressed_req_t (x_compressed_req_t),
+  //    .x_compressed_resp_t (x_compressed_resp_t),
+  //    .x_issue_req_t (x_issue_req_t),
+  //    .x_issue_resp_t (x_issue_resp_t),
+  //    .x_register_t (x_register_t),
+  //    .x_commit_t (x_commit_t),
+  //    .x_result_t (x_result_t),
+  //    .cvxif_req_t (cvxif_req_t),
+  //    .cvxif_resp_t (cvxif_resp_t)
+  //  ) i_crypto_coprocessor (
+  //    .clk_i                ( clk_i                          ),
+  //    .rst_ni               ( rst_ni                         ),
+  //    .cvxif_req_i          ( cvxif_req                      ),
+  //    .cvxif_resp_o         ( cvxif_resp                     )
+  //  );
+  cvxif_example_coprocessor #(
       .NrRgprPorts (CVA6Cfg.NrRgprPorts),
       .XLEN (CVA6Cfg.XLEN),
       .readregflags_t (readregflags_t),

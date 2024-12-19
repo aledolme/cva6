@@ -64,6 +64,34 @@ module copro_alu
         rd_n     = rd_i;
         we_n     = 1'b1;
       end
+
+      //------AD: new custom instruction---------------------
+      cvxif_instr_pkg::XOR: begin
+        result_n = registers_i[1] ^ registers_i[0];
+        hartid_n = hartid_i;
+        id_n     = id_i;
+        valid_n  = 1'b1;
+        rd_n     = rd_i;
+        we_n     = 1'b1;
+      end
+      cvxif_instr_pkg::AND: begin
+        result_n = registers_i[1] & registers_i[0];
+        hartid_n = hartid_i;
+        id_n     = id_i;
+        valid_n  = 1'b1;
+        rd_n     = rd_i;
+        we_n     = 1'b1;
+      end
+      cvxif_instr_pkg::OR: begin
+        result_n = registers_i[1] | registers_i[0];
+        hartid_n = hartid_i;
+        id_n     = id_i;
+        valid_n  = 1'b1;
+        rd_n     = rd_i;
+        we_n     = 1'b1;
+      end
+      //-----------------------------------------------------
+
       cvxif_instr_pkg::DOUBLE_RS1: begin
         result_n = registers_i[0] + registers_i[0];
         hartid_n = hartid_i;
