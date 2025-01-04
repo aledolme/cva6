@@ -120,6 +120,7 @@ ariane_pkg := \
               corev_apu/register_interface/src/reg_intf.sv           \
               corev_apu/tb/ariane_soc_pkg.sv                         \
               corev_apu/riscv-dbg/src/dm_pkg.sv                      \
+			  ad_tests/FPGA/trigger_ip/sv/trigger_reg_pkg.sv		 \
               corev_apu/tb/ariane_axi_soc_pkg.sv
 ariane_pkg := $(addprefix $(root-dir), $(ariane_pkg))
 
@@ -160,7 +161,12 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         core/cva6_rvfi.sv                                                            \
         corev_apu/src/ariane.sv                                                      \
         $(wildcard corev_apu/bootrom/*.sv)                                           \
-        $(wildcard corev_apu/clint/*.sv)                                             \
+		$(wildcard ad_tests/FPGA/trigger_ip/*.sv)                                    \
+		$(wildcard ad_tests/FPGA/trigger_ip/register_interface*.sv)                  \
+		$(wildcard ad_tests/FPGA/trigger_ip/register_interface*.svh)                 \
+		$(wildcard ad_tests/FPGA/trigger_ip/sv/*.sv)				                 \
+		$(wildcard vendor/lowrisc_opentitan/src/*.sv)				                 \
+		$(wildcard corev_apu/clint/*.sv)                                             \
         $(wildcard corev_apu/fpga/src/axi2apb/src/*.sv)                              \
         $(wildcard corev_apu/fpga/src/apb_timer/*.sv)                                \
         $(wildcard corev_apu/fpga/src/axi_slice/src/*.sv)                            \
@@ -185,6 +191,7 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         vendor/pulp-platform/common_cells/src/addr_decode.sv                         \
         vendor/pulp-platform/common_cells/src/stream_register.sv                     \
         vendor/pulp-platform/axi/src/axi_cut.sv                                      \
+		vendor/pulp-platform/axi/src/axi_burst_splitter.sv							 \
         vendor/pulp-platform/axi/src/axi_join.sv                                     \
         vendor/pulp-platform/axi/src/axi_delayer.sv                                  \
         vendor/pulp-platform/axi/src/axi_to_axi_lite.sv                              \
@@ -204,7 +211,7 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         vendor/pulp-platform/tech_cells_generic/src/deprecated/cluster_clk_cells.sv  \
         vendor/pulp-platform/tech_cells_generic/src/deprecated/pulp_clk_cells.sv     \
         vendor/pulp-platform/tech_cells_generic/src/rtl/tc_clk.sv                    \
-        corev_apu/tb/ariane_testharness.sv                                           \
+		corev_apu/tb/ariane_testharness.sv                                           \
         corev_apu/tb/ariane_peripherals.sv                                           \
         corev_apu/tb/rvfi_tracer.sv                                                  \
         corev_apu/tb/common/uart.sv                                                  \
@@ -262,6 +269,8 @@ riscv-benchmarks          := $(shell xargs printf '\n%s' < $(riscv-benchmarks-li
 incdir := $(CVA6_REPO_DIR)/vendor/pulp-platform/common_cells/include/ $(CVA6_REPO_DIR)/vendor/pulp-platform/axi/include/ \
           $(CVA6_REPO_DIR)/corev_apu/register_interface/include/ $(CVA6_REPO_DIR)/corev_apu/tb/common/ \
           $(CVA6_REPO_DIR)/vendor/pulp-platform/axi/include/ \
+          $(CVA6_REPO_DIR)/ad_tests/FPGA/trigger_ip/register_interface/ \
+          $(CVA6_REPO_DIR)/ad_tests/FPGA/trigger_ip/ \
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_agents/uvma_rvfi/ \
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_components/uvmc_rvfi_reference_model/ \
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_components/uvmc_rvfi_scoreboard/ \
