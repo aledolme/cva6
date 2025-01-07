@@ -75,8 +75,8 @@ module trigger_top
 	trigger i_trigger (
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
-		.trigger_on_i(reg_file_to_ip.ctrl.start.q & reg_file_to_ip.ctrl.start.qe),
-		.trigger_off_i(reg_file_to_ip.ctrl.stop.q & reg_file_to_ip.ctrl.stop.qe),
+		.trigger_on_i(reg_file_to_ip.ctrl.start.q),
+		.trigger_off_i(reg_file_to_ip.ctrl.stop.q),
 		.gpio_o(dout_gpio)
 	);
 

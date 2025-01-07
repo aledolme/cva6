@@ -510,10 +510,6 @@ module ariane_testharness #(
   };
 
 
-  //ariane_axi::req_t    trigger_axi_req;
-  //ariane_axi::resp_t   trigger_axi_resp;
-  // `AXI_ASSIGN_FROM_REQ(slave[2], trigger_axi_req)
-  // `AXI_ASSIGN_TO_RESP(trigger_axi_resp, slave[2])
   //ariane_axi_soc::req_slv_t  trigger_axi_req;
   //ariane_axi_soc::resp_slv_t trigger_axi_resp;
   //`AXI_ASSIGN_TO_REQ(trigger_axi_req, master[ariane_soc::Trigger])
