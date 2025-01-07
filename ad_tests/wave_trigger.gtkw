@@ -1,27 +1,24 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Sat Dec 28 14:15:04 2024
+[*] Tue Jan  7 08:17:58 2025
 [*]
-[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2024-12-28/veri-testharness_sim/gpio.cv64a6_imafdc_sv39.vcd"
-[dumpfile_mtime] "Sat Dec 28 14:09:03 2024"
-[dumpfile_size] 101018164
+[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-01-07/veri-testharness_sim/gpio.cv64a6_imafdc_sv39.vcd"
+[dumpfile_mtime] "Tue Jan  7 08:07:35 2025"
+[dumpfile_size] 94707152
 [savefile] "/home/a.dolmeta/cva6/ad_tests/wave_trigger.gtkw"
-[timestart] 0
-[size] 1536 793
-[pos] -9 -41
-*-12.000000 8261 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[timestart] 8932
+[size] 2560 1369
+[pos] -2569 -304
+*-3.000000 8967 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] ariane_testharness.
-[treeopen] ariane_testharness.gpio_req.
-[treeopen] ariane_testharness.gpio_resp.
 [treeopen] ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.
-[treeopen] ariane_testharness.i_trigger.
 [treeopen] ariane_testharness.i_trigger.ip_to_reg_file.
 [treeopen] ariane_testharness.i_trigger.reg_file_to_ip.
 [treeopen] ariane_testharness.i_trigger.reg_file_to_ip.ctrl.
 [sst_width] 355
 [signals_width] 375
 [sst_expanded] 1
-[sst_vpaned_height] 220
+[sst_vpaned_height] 422
 @28
 [color] 3
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.clk_i
@@ -183,141 +180,102 @@ ariane_testharness.i_trigger.clk_i
 ariane_testharness.i_trigger.dout_gpio
 ariane_testharness.i_trigger.rst_ni
 ariane_testharness.i_trigger.test_mode_i
-ariane_testharness.i_trigger.i_trigger.gpio_o
-ariane_testharness.i_trigger.i_trigger.gpio_reg
-ariane_testharness.i_trigger.i_trigger.rst_ni
-ariane_testharness.i_trigger.i_trigger.trigger_off_i
-@29
-ariane_testharness.i_trigger.i_trigger.trigger_on_i
-@22
-ariane_testharness.slave[2].AXI_ADDR_WIDTH[31:0]
-ariane_testharness.slave[2].AXI_DATA_WIDTH[31:0]
-ariane_testharness.slave[2].AXI_ID_WIDTH[31:0]
-ariane_testharness.slave[2].AXI_STRB_WIDTH[31:0]
-ariane_testharness.slave[2].AXI_USER_WIDTH[31:0]
-ariane_testharness.slave[2].ar_addr[63:0]
-@28
-ariane_testharness.slave[2].ar_burst[1:0]
-@22
-ariane_testharness.slave[2].ar_cache[3:0]
-ariane_testharness.slave[2].ar_id[3:0]
-ariane_testharness.slave[2].ar_len[7:0]
-@28
-ariane_testharness.slave[2].ar_lock
-ariane_testharness.slave[2].ar_prot[2:0]
-@22
-ariane_testharness.slave[2].ar_qos[3:0]
-@28
-ariane_testharness.slave[2].ar_ready
-@22
-ariane_testharness.slave[2].ar_region[3:0]
-@28
-ariane_testharness.slave[2].ar_size[2:0]
-@22
-ariane_testharness.slave[2].ar_user[63:0]
-@28
-ariane_testharness.slave[2].ar_valid
-@22
-ariane_testharness.slave[2].aw_addr[63:0]
-ariane_testharness.slave[2].aw_atop[5:0]
-@28
-ariane_testharness.slave[2].aw_burst[1:0]
-@22
-ariane_testharness.slave[2].aw_cache[3:0]
-ariane_testharness.slave[2].aw_id[3:0]
-ariane_testharness.slave[2].aw_len[7:0]
-@28
-ariane_testharness.slave[2].aw_lock
-ariane_testharness.slave[2].aw_prot[2:0]
-@22
-ariane_testharness.slave[2].aw_qos[3:0]
-@28
-ariane_testharness.slave[2].aw_ready
-@22
-ariane_testharness.slave[2].aw_region[3:0]
-@28
-ariane_testharness.slave[2].aw_size[2:0]
-@22
-ariane_testharness.slave[2].aw_user[63:0]
-@28
-ariane_testharness.slave[2].aw_valid
-@22
-ariane_testharness.slave[2].b_id[3:0]
-@28
-ariane_testharness.slave[2].b_ready
-ariane_testharness.slave[2].b_resp[1:0]
-@22
-ariane_testharness.slave[2].b_user[63:0]
-@28
-ariane_testharness.slave[2].b_valid
-@22
-ariane_testharness.slave[2].r_data[63:0]
-ariane_testharness.slave[2].r_id[3:0]
-@28
-ariane_testharness.slave[2].r_last
-ariane_testharness.slave[2].r_ready
-ariane_testharness.slave[2].r_resp[1:0]
-@22
-ariane_testharness.slave[2].r_user[63:0]
-@28
-ariane_testharness.slave[2].r_valid
-@22
-ariane_testharness.slave[2].w_data[63:0]
-@28
-ariane_testharness.slave[2].w_last
-ariane_testharness.slave[2].w_ready
-@22
-ariane_testharness.slave[2].w_strb[7:0]
-ariane_testharness.slave[2].w_user[63:0]
-@28
-ariane_testharness.slave[2].w_valid
-ariane_testharness.trigger_axi_req.ar_valid
-ariane_testharness.trigger_axi_req.aw_valid
-ariane_testharness.trigger_axi_req.b_ready
-ariane_testharness.trigger_axi_req.r_ready
-ariane_testharness.trigger_axi_req.w_valid
-ariane_testharness.trigger_axi_resp.ar_ready
-ariane_testharness.trigger_axi_resp.aw_ready
-ariane_testharness.trigger_axi_resp.b_valid
-ariane_testharness.trigger_axi_resp.r_valid
-ariane_testharness.trigger_axi_resp.w_ready
-@22
-ariane_testharness.i_trigger.ip_to_reg_file.gpio_o[0].d[31:0]
-@28
-ariane_testharness.i_trigger.ip_to_reg_file.status.d
 ariane_testharness.i_trigger.reg_file_to_ip.ctrl.start.q
 ariane_testharness.i_trigger.reg_file_to_ip.ctrl.start.qe
 ariane_testharness.i_trigger.reg_file_to_ip.ctrl.stop.q
 ariane_testharness.i_trigger.reg_file_to_ip.ctrl.stop.qe
-ariane_testharness.i_trigger.i_regfile.addr_hit[2:0]
-ariane_testharness.i_trigger.i_regfile.addrmiss
-ariane_testharness.i_trigger.i_regfile.clk_i
-ariane_testharness.i_trigger.i_regfile.ctrl_start_wd
-ariane_testharness.i_trigger.i_regfile.ctrl_start_we
-ariane_testharness.i_trigger.i_regfile.ctrl_stop_wd
-ariane_testharness.i_trigger.i_regfile.ctrl_stop_we
-ariane_testharness.i_trigger.i_regfile.devmode_i
+ariane_testharness.i_trigger.ip_to_reg_file.status.d
 @22
-ariane_testharness.i_trigger.i_regfile.gpio_o_qs[31:0]
+ariane_testharness.i_trigger.ip_to_reg_file.gpio_o[0].d[31:0]
 @28
-ariane_testharness.i_trigger.i_regfile.gpio_o_re
+ariane_testharness.i_trigger.i_trigger.clk_i
+ariane_testharness.i_trigger.i_trigger.gpio_o
+ariane_testharness.i_trigger.i_trigger.gpio_reg
+ariane_testharness.i_trigger.i_trigger.rst_ni
+ariane_testharness.i_trigger.i_trigger.trigger_off_i
+ariane_testharness.i_trigger.i_trigger.trigger_on_i
 @22
-ariane_testharness.i_trigger.i_regfile.reg_addr[3:0]
-ariane_testharness.i_trigger.i_regfile.reg_be[3:0]
+ariane_testharness.master[1].AXI_ADDR_WIDTH[31:0]
+ariane_testharness.master[1].AXI_DATA_WIDTH[31:0]
+ariane_testharness.master[1].AXI_ID_WIDTH[31:0]
+ariane_testharness.master[1].AXI_STRB_WIDTH[31:0]
+ariane_testharness.master[1].AXI_USER_WIDTH[31:0]
+@23
+ariane_testharness.master[1].ar_addr[63:0]
 @28
-ariane_testharness.i_trigger.i_regfile.reg_error
+ariane_testharness.master[1].ar_burst[1:0]
 @22
-ariane_testharness.i_trigger.i_regfile.reg_rdata[31:0]
-ariane_testharness.i_trigger.i_regfile.reg_rdata_next[31:0]
+ariane_testharness.master[1].ar_cache[3:0]
+ariane_testharness.master[1].ar_id[5:0]
+ariane_testharness.master[1].ar_len[7:0]
 @28
-ariane_testharness.i_trigger.i_regfile.reg_re
+ariane_testharness.master[1].ar_lock
+ariane_testharness.master[1].ar_prot[2:0]
 @22
-ariane_testharness.i_trigger.i_regfile.reg_wdata[31:0]
+ariane_testharness.master[1].ar_qos[3:0]
 @28
-ariane_testharness.i_trigger.i_regfile.reg_we
-ariane_testharness.i_trigger.i_regfile.rst_ni
-ariane_testharness.i_trigger.i_regfile.status_qs
-ariane_testharness.i_trigger.i_regfile.status_re
-ariane_testharness.i_trigger.i_regfile.wr_err
+ariane_testharness.master[1].ar_ready
+@22
+ariane_testharness.master[1].ar_region[3:0]
+@28
+ariane_testharness.master[1].ar_size[2:0]
+@22
+ariane_testharness.master[1].ar_user[63:0]
+@28
+ariane_testharness.master[1].ar_valid
+@22
+ariane_testharness.master[1].aw_addr[63:0]
+ariane_testharness.master[1].aw_atop[5:0]
+@28
+ariane_testharness.master[1].aw_burst[1:0]
+@22
+ariane_testharness.master[1].aw_cache[3:0]
+ariane_testharness.master[1].aw_id[5:0]
+ariane_testharness.master[1].aw_len[7:0]
+@28
+ariane_testharness.master[1].aw_lock
+ariane_testharness.master[1].aw_prot[2:0]
+@22
+ariane_testharness.master[1].aw_qos[3:0]
+@28
+ariane_testharness.master[1].aw_ready
+@22
+ariane_testharness.master[1].aw_region[3:0]
+@28
+ariane_testharness.master[1].aw_size[2:0]
+@22
+ariane_testharness.master[1].aw_user[63:0]
+@28
+ariane_testharness.master[1].aw_valid
+@22
+ariane_testharness.master[1].b_id[5:0]
+@28
+ariane_testharness.master[1].b_ready
+ariane_testharness.master[1].b_resp[1:0]
+@22
+ariane_testharness.master[1].b_user[63:0]
+@28
+ariane_testharness.master[1].b_valid
+@22
+ariane_testharness.master[1].r_data[63:0]
+ariane_testharness.master[1].r_id[5:0]
+@28
+ariane_testharness.master[1].r_last
+ariane_testharness.master[1].r_ready
+ariane_testharness.master[1].r_resp[1:0]
+@22
+ariane_testharness.master[1].r_user[63:0]
+@28
+ariane_testharness.master[1].r_valid
+@22
+ariane_testharness.master[1].w_data[63:0]
+@28
+ariane_testharness.master[1].w_last
+ariane_testharness.master[1].w_ready
+@22
+ariane_testharness.master[1].w_strb[7:0]
+ariane_testharness.master[1].w_user[63:0]
+@28
+ariane_testharness.master[1].w_valid
 [pattern_trace] 1
 [pattern_trace] 0

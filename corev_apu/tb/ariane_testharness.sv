@@ -514,10 +514,10 @@ module ariane_testharness #(
   //ariane_axi::resp_t   trigger_axi_resp;
   // `AXI_ASSIGN_FROM_REQ(slave[2], trigger_axi_req)
   // `AXI_ASSIGN_TO_RESP(trigger_axi_resp, slave[2])
-  ariane_axi_soc::req_slv_t  trigger_axi_req;
-  ariane_axi_soc::resp_slv_t trigger_axi_resp;
-  `AXI_ASSIGN_TO_REQ(trigger_axi_req, master[ariane_soc::Trigger])
-  `AXI_ASSIGN_FROM_RESP(master[ariane_soc::Trigger], trigger_axi_resp)
+  //ariane_axi_soc::req_slv_t  trigger_axi_req;
+  //ariane_axi_soc::resp_slv_t trigger_axi_resp;
+  //`AXI_ASSIGN_TO_REQ(trigger_axi_req, master[ariane_soc::Trigger])
+  //`AXI_ASSIGN_FROM_RESP(master[ariane_soc::Trigger], trigger_axi_resp)
 
   trigger_top #(
     .AXI_ADDR_WIDTH   ( AXI_ADDRESS_WIDTH),
@@ -527,7 +527,7 @@ module ariane_testharness #(
     .clk_i        (clk_i),
     .rst_ni       (ndmreset_n),
     .test_mode_i  (test_en),
-    .axi_slave    (slave[0])
+    .axi_slave    (master[ariane_soc::Trigger])
   );
 
 

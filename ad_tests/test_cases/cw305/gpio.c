@@ -24,7 +24,7 @@ int main() {
     uint32_t flag;
 
 
-    uint32_t volatile * trigger = (*(volatile uint32_t*)TRIGGER_CTRL(0));
+    uint32_t volatile * trigger = (*(volatile uint32_t*)TRIGGER_CTRL);
     asm volatile ("": : : "memory");
     *trigger = 1 << TRIGGER_CTRL_START;
     asm volatile ("": : : "memory");
