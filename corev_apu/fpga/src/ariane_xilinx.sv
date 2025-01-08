@@ -46,6 +46,12 @@ module ariane_xilinx (
   input  logic [ 7:0]  sw          ,
   output logic         fan_pwm     ,
   input  logic         trst_n      ,
+`elsif CW305
+  input	 logic	       clk	   ,
+
+  input  logic	       cpu_resetn  ,
+  output logic [ 3:0]  led	   ,
+  input  logic [ 3:0]  sw	   ,
 `elsif KC705
   input  logic         sys_clk_p   ,
   input  logic         sys_clk_n   ,
@@ -870,6 +876,9 @@ ariane_peripherals #(
     `ifdef KINTEX7
     .InclSPI      ( 1'b1         ),
     .InclEthernet ( 1'b1         )
+    `elsif CW305
+    .InclSPI	  ( 1'b0	 ),
+    .InclEthernet ( 1'b0	 )
     `elsif KC705
     .InclSPI      ( 1'b1         ),
     .InclEthernet ( 1'b0         ) // Ethernet requires RAMB16 fpga/src/ariane-ethernet/dualmem_widen8.sv to be defined
