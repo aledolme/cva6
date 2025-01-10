@@ -25,7 +25,7 @@
 
 void read_seed_input_from_uart(uint8_t *seed_input, size_t size);
 
-read_uint32_from_uart();
+uint32_t read_uint32_from_uart();
 
 void init_uart();
 
