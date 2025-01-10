@@ -1,5 +1,5 @@
 /****************************************************************************************
-# Simple custom test:       trigger.c
+# Simple custom test:       leds.c
 # Author:                   Alessandra Dolmeta
 # Description:              Test the trigger-peripheral.
 /****************************************************************************************/

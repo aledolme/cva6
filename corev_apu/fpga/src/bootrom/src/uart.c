@@ -1,33 +1,9 @@
 // Copyright OpenHW Group contributors.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
-#include <stdint.h>
-#include <stdio.h>
+
 #include "uart.h"
 
-
-void read_seed_input_from_uart(uint8_t *seed_input, size_t size) {
-    print_uart("Please send the seed input (");
-    print_uart_int(size);
-    print_uart(" bytes in hexadecimal format):\n");
-
-    for (size_t i = 0; i < size; i++) {
-        uint8_t byte_received;
-        while (!read_serial(&byte_received)) {
-            // Wait for data
-        }
-        seed_input[i] = byte_received;
-
-        // Echo received byte as hexadecimal for confirmation
-        print_uart("Received byte ");
-        print_uart_byte(byte_received);
-        print_uart("\n");
-    }
-}
-
-
-
-/********************************ORIGINAL FILE***************************************/
 void write_reg_u8(uintptr_t addr, uint8_t value)
 {
     volatile uint8_t *loc_addr = (volatile uint8_t *)addr;
