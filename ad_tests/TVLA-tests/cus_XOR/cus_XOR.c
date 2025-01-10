@@ -26,12 +26,12 @@ void output(const char* title, uint32_t i, const char* title2, uint8_t *data, ui
     printf("\n");
 }
 
-void cv_xif_CUS_AND(uint32_t* a, uint32_t* b, uint32_t* res)
+void cv_xif_CUS_XOR(uint32_t* a, uint32_t* b, uint32_t* res)
 {
     asm volatile (
         "lw a1, %[input_a]\n"               //a0: x10
         "lw a0, %[input_b]\n"               //a1: x11
-        ".insn r 0x7B, 1, 7, a2, a0, a1\n"  //CUS_AND(a0,a1,a2)
+        ".insn r 0x7B, 1, 5, a2, a0, a1\n"  //CUS_XOR(a0,a1,a2)
         "mv %[output_res], a2\n"
         : [output_res] "=r" (*res)    
         : [input_a] "m" (*a), [input_b] "m" (*b) // Input operands
@@ -108,7 +108,7 @@ int main() {
             uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
             *trigger = 1 << TRIGGER_CTRL_START;
 
-            cv_xif_CUS_AND(&rs1, &rs2, &res);
+            cv_xif_CUS_XOR(&rs1, &rs2, &res);
 
             // De-activate trigger_GPIO
             asm volatile ("": : : "memory");
@@ -125,7 +125,7 @@ int main() {
             uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
             *trigger = 1 << TRIGGER_CTRL_START;
 
-            cv_xif_CUS_AND(&rs1_fixed, &rs2_fixed, &res);
+            cv_xif_CUS_XOR(&rs1_fixed, &rs2_fixed, &res);
 
             // De-activate trigger_GPIO
             asm volatile ("": : : "memory");
