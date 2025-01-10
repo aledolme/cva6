@@ -52,6 +52,7 @@ module ariane_xilinx (
   input  logic	       cpu_resetn  ,
   output logic [ 3:0]  led	   ,
   input  logic [ 3:0]  sw	   ,
+  output logic         trigger_gpio_o,
 `elsif KC705
   input  logic         sys_clk_p   ,
   input  logic         sys_clk_n   ,
@@ -217,7 +218,7 @@ localparam NumWords = (24 * 1024 * 1024) / 8;
   
 // WARNING: If NBSlave is modified, Xilinx's IPs under fpga/xilinx need to be updated with the new AXI id width and regenerated.
 // Otherwise reads and writes to DRAM may be returned to the wrong master and the crossbar will freeze. See issue #568.
-localparam NBSlave = 3; // debug, ariane + trigger
+localparam NBSlave = 2; // debug, ariane 
 localparam AxiAddrWidth = 64;
 localparam AxiDataWidth = 64;
 localparam AxiIdWidthMaster = 4;
@@ -356,6 +357,8 @@ trigger_top #(
   .trigger_o    (trigger_gpio),
   .axi_slave    (master[ariane_soc::Trigger])
 );
+
+assign trigger_gpio_o = trigger_gpio;
 
 localparam axi_pkg::xbar_cfg_t AXI_XBAR_CFG = '{
   NoSlvPorts:         ariane_soc::NrSlaves,
