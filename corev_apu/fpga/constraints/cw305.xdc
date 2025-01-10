@@ -50,6 +50,8 @@ set_input_delay -clock [get_clocks jtag_clk] -min 2.0 [get_ports {tms } ]
 set_input_delay -clock [get_clocks jtag_clk] -max 10.0 [get_ports { tdi } ] 
 set_input_delay -clock [get_clocks jtag_clk] -min 2.0 [get_ports { tdi } ] 
 
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets tck_IBUF]
+
 ## SPI
 #create_generated_clock -name spi_clk -waveform {0.0 50.0} -period 100.0 [get_nets spi_clk_o] -source 
 #set_output_delay -clock [get_clocks spi_clk] -max [get_ports spi_mosi] 5.0

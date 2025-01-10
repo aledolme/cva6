@@ -50,7 +50,7 @@ module ariane_xilinx (
   input	 logic	       clk	   ,
 
   input  logic	       cpu_resetn  ,
-  output logic [ 3:0]  led	   ,
+  output logic [ 2:0]  led	   ,
   input  logic [ 3:0]  sw	   ,
 `elsif KC705
   input  logic         sys_clk_p   ,
@@ -183,7 +183,6 @@ module ariane_xilinx (
   output logic        spi_ss      ,
   output logic        spi_clk_o   ,
   // common part
-  // input logic      trst_n      ,
   input  logic        tck         ,
   input  logic        tms         ,
   input  logic        tdi         ,
@@ -217,7 +216,11 @@ localparam NumWords = (24 * 1024 * 1024) / 8;
   
 // WARNING: If NBSlave is modified, Xilinx's IPs under fpga/xilinx need to be updated with the new AXI id width and regenerated.
 // Otherwise reads and writes to DRAM may be returned to the wrong master and the crossbar will freeze. See issue #568.
-localparam NBSlave = 3; // debug, ariane + trigger
+`ifdef CW305
+	localparam NBSlave = 2;
+`else
+	localparam NBSlave = 3; // debug, ariane + trigger
+`endif
 localparam AxiAddrWidth = 64;
 localparam AxiDataWidth = 64;
 localparam AxiIdWidthMaster = 4;
@@ -279,6 +282,11 @@ assign cpu_resetn = ~cpu_reset;
 `elsif GENESYSII
 logic cpu_reset;
 assign cpu_reset  = ~cpu_resetn;
+`elsif CW305
+logic cpu_reset;
+assign cpu_reset  = ~cpu_resetn;
+assign trst_n = 1'b1;
+assign trst = 1'b0;
 `elsif KC705
 assign cpu_resetn = ~cpu_reset;
 `elsif VC707
@@ -862,6 +870,9 @@ end
 `ifdef KC705
   logic [7:0] unused_led;
   logic [3:0] unused_switches = 4'b0000;
+`else
+  logic [7:0] unused_led;
+  logic [3:0] unused_switches = 4'b0000;
 `endif
 
 logic clk_200MHz_ref;
@@ -877,7 +888,7 @@ ariane_peripherals #(
     .InclSPI      ( 1'b1         ),
     .InclEthernet ( 1'b1         )
     `elsif CW305
-    .InclSPI	  ( 1'b0	 ),
+    .InclSPI	  ( 1'b1	 ),
     .InclEthernet ( 1'b0	 )
     `elsif KC705
     .InclSPI      ( 1'b1         ),
@@ -906,16 +917,18 @@ ariane_peripherals #(
     .irq_o        ( irq                          ),
     .rx_i         ( rx                           ),
     .tx_o         ( tx                           ),
-    .eth_txck,
-    .eth_rxck,
-    .eth_rxctl,
-    .eth_rxd,
-    .eth_rst_n,
-    .eth_txctl,
-    .eth_txd,
-    .eth_mdio,
-    .eth_mdc,
-    .phy_tx_clk_i   ( phy_tx_clk                  ),
+    `ifndef CW305
+	    .eth_txck,
+	    .eth_rxck,
+	    .eth_rxctl,
+	    .eth_rxd,
+	    .eth_rst_n,
+	    .eth_txctl,
+	    .eth_txd,
+	    .eth_mdio,
+	    .eth_mdc,
+	    .phy_tx_clk_i   ( phy_tx_clk                  ),
+    `endif
     .sd_clk_i       ( sd_clk_sys                  ),
     .spi_clk_o      ( spi_clk_o                   ),
     .spi_mosi       ( spi_mosi                    ),
@@ -924,6 +937,9 @@ ariane_peripherals #(
     `ifdef KC705
       .leds_o         ( {led[3:0], unused_led[7:4]}),
       .dip_switches_i ( {sw, unused_switches}     )
+    `elsif CW305
+      .leds_o	      ( {led[2:0], unused_led[7:3]}),
+      .dip_switches_i ( {sw, unused_switches}	  )
     `else
       .leds_o         ( led                       ),
       .dip_switches_i ( sw                        )
@@ -1056,6 +1072,7 @@ xlnx_protocol_checker i_xlnx_protocol_checker (
 assign dram.r_user = '0;
 assign dram.b_user = '0;
 
+`ifndef CW305 
 xlnx_axi_clock_converter i_xlnx_axi_clock_converter_ddr (
   .s_axi_aclk     ( clk              ),
   .s_axi_aresetn  ( ndmreset_n       ),
@@ -1141,6 +1158,9 @@ xlnx_axi_clock_converter i_xlnx_axi_clock_converter_ddr (
   .m_axi_rvalid   ( s_axi_rvalid     ),
   .m_axi_rready   ( s_axi_rready     )
 );
+`else
+
+`endif
 
 `ifdef NEXYS_VIDEO
 xlnx_clk_gen i_xlnx_clk_gen (
@@ -1154,8 +1174,15 @@ xlnx_clk_gen i_xlnx_clk_gen (
   .clk_in1  ( ddr_clock_out   )  // 100MHz input clock
 );
 
-`else
+`elsif CW305
 
+assign phy_tx_clk = 1'b0;
+assign eth_clk = 1'b0;
+assign sd_clk_sys = 1'b0;
+assign ddr_clk_out = 1'b0;
+assign pll_locked = cpu_resetn;
+
+`else
 xlnx_clk_gen i_xlnx_clk_gen (
   .clk_out1 ( clk           ), // 50 MHz
   .clk_out2 ( phy_tx_clk    ), // 125 MHz (for RGMII PHY)
@@ -1176,7 +1203,6 @@ fan_ctrl i_fan_ctrl (
     .pwm_setting_i ( '1         ),
     .fan_pwm_o     ( fan_pwm    )
 );
-
 xlnx_mig_7_ddr3 i_ddr (
     .sys_clk_p,
     .sys_clk_n,
@@ -1914,6 +1940,8 @@ axi_clock_converter_0 pcie_axi_clock_converter (
   .s_axi_rvalid   ( pcie_dwidth_axi_rvalid   ),
   .s_axi_rready   ( pcie_dwidth_axi_rready   )
 );
+`elsif CW305
+
 `endif
 
 endmodule
