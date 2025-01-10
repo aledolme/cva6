@@ -636,15 +636,16 @@ def run_c(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
     c = re.sub(r"^.*\/", "", c_test)
     c = re.sub(r"\.c$", "", c)
     prefix = f"{output_dir}/directed_c_tests/{c}"
-    elf = prefix + ".o"
+    elf = f"{output_dir}/elf_files/{c}.elf"  # Updated to .elf for FPGA
     binary = prefix + ".bin"
     disassembly = f"{output_dir}/directed_s_tests/{c}.s"
     iss_list = iss_opts.split(",")
-    
+
     # Create necessary directories
     run_cmd("mkdir -p %s/directed_c_tests" % output_dir)
     run_cmd("mkdir -p %s/directed_s_tests" % output_dir)
-    
+    run_cmd("mkdir -p %s/elf_files" % output_dir)  # Directory for .elf files
+
     logging.info("Compiling c test: %s" % c_test)
 
     # GCC compilation
@@ -656,8 +657,10 @@ def run_c(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
     cmd += (" -march=%s" % isa)
     cmd += (" -mabi=%s" % mabi)
     run_cmd(cmd, debug_cmd=debug_cmd)
-    elf2bin(elf, binary, debug_cmd)
     
+    # Generate binary file from .elf
+    elf2bin(elf, binary, debug_cmd)
+
     # Generate disassembly file
     objdump_tool = "riscv64-unknown-elf-objdump"  # Default tool
     cmd_objdump = f"{objdump_tool} -d {elf} > {disassembly}"
@@ -666,9 +669,9 @@ def run_c(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
         run_cmd(cmd_objdump, debug_cmd=debug_cmd)
     except Exception as e:
         logging.error("Failed to generate disassembly: %s" % str(e))
-    
+
     log_list = []
-    
+
     # ISS simulation
     test_log_name = test_name or c
     for iss in iss_list:
