@@ -12,6 +12,7 @@ module trigger_top
 	input logic clk_i,
 	input logic rst_ni,
 	input logic test_mode_i,
+	output logic trigger_o,
 
 	AXI_BUS.Slave axi_slave
        );
@@ -81,5 +82,6 @@ module trigger_top
 	);
 
   assign ip_to_reg_file.gpio_o = dout_gpio;
+  assign trigger_o = dout_gpio;
   
 endmodule : trigger_top

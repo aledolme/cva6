@@ -343,6 +343,7 @@ assign addr_map = '{
   '{ idx: ariane_soc::DRAM,     start_addr: ariane_soc::DRAMBase,     end_addr: ariane_soc::DRAMBase + ariane_soc::DRAMLength         }
 };
 
+logic trigger_gpio;
 
 trigger_top #(
   .AXI_ADDR_WIDTH   ( AXI_ADDRESS_WIDTH),
@@ -352,6 +353,7 @@ trigger_top #(
   .clk_i        (clk_i),
   .rst_ni       (ndmreset_n),
   .test_mode_i  (test_en),
+  .trigger_o    (trigger_gpio),
   .axi_slave    (master[ariane_soc::Trigger])
 );
 
