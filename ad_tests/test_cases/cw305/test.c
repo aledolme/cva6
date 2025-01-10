@@ -11,11 +11,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "AES_128_CBC.h"
+#include "trigger_auto.h"
 
 #define AES_BLOCK_SIZE 16 // AES block size in bytes
 
-#define GPIO_TRIGGER_ON()  // Placeholder for activating GPIO
-#define GPIO_TRIGGER_OFF() // Placeholder for deactivating GPIO
 
 void output(const char* title, uint32_t i, const char* title2, uint8_t *data, uint32_t size) {
     printf("%s", title);
@@ -25,6 +24,19 @@ void output(const char* title, uint32_t i, const char* title2, uint8_t *data, ui
         printf("%02x", data[index]);
     }
     printf("\n");
+}
+
+void cv_xif_CUS_AND(uint32_t* a, uint32_t* b, uint32_t* res)
+{
+    asm volatile (
+        "lw a1, %[input_a]\n"               //a0: x10
+        "lw a0, %[input_b]\n"               //a1: x11
+        ".insn r 0x7B, 1, 7, a2, a0, a1\n"  //CUS_AND(a0,a1,a2)
+        "mv %[output_res], a2\n"
+        : [output_res] "=r" (*res)    
+        : [input_a] "m" (*a), [input_b] "m" (*b) // Input operands
+        : 
+    );
 }
 
 
@@ -43,10 +55,14 @@ int main() {
     uint8_t input_block[AES_BLOCK_SIZE];    // Input block for AES (random or fixed data)
     uint8_t plaintext[AES_BLOCK_SIZE*2];
     AES_CTX ctx;
+    uint32_t res;
+
+    uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
 
     //Putting low the trigger
-    GPIO_TRIGGER_OFF();
-
+    asm volatile ("": : : "memory");
+    *trigger = 1 << TRIGGER_CTRL_STOP;
+    asm volatile ("": : : "memory");
 
     //TBD: Waiting for UART-input
     //For now: simulate taking 32-byte seed as the IV from external input
@@ -70,39 +86,51 @@ int main() {
     
     for (uint32_t i = 0; i < num_traces; i++) {
 
-        output("\niv block", i, ": 0x", data, 16);
+        //output("\niv block", i, ": 0x", data, 16);
         // Perform one round of AES CBC using the current IV
         for (unsigned int offset = 0; offset < 32; offset += 16) {
             AES_Encrypt(&ctx, data + offset, data + offset);
         }
         // Update IV for next round
-        output("encrypted block", i, ": 0x", data, 16);
+        //output("encrypted block", i, ": 0x", data, 16);
         memcpy(ciphertext, data, AES_BLOCK_SIZE);
 
         // Determine case based on LSB of the ciphertext
         int lsb_check = ciphertext[0] & 0x01; // Check the LSB of the last byte (most significant byte of the 128-bit value)
         if (lsb_check) {
-            // Activate trigger_GPIO
-            GPIO_TRIGGER_ON();
 
             // Execute operation with random data (use 4 bytes of ciphertext as random data)
             uint32_t rs1 = *(uint32_t *)&ciphertext[4];  // Second 4 bytes as rs1
             uint32_t rs2 = *(uint32_t *)&ciphertext[8];  // Next 4 bytes as rs2
-            printf("Trace %u: Random data operation with rs1: 0x%08X, rs2: 0x%08X\n", i, rs1, rs2);
+            //printf("Trace %u: Random data operation with rs1: 0x%08X, rs2: 0x%08X\n", i, rs1, rs2);
 
-            // De-activate trigger_GPIO
-            GPIO_TRIGGER_OFF();
-        }
-        else {
             // Activate trigger_GPIO
-            GPIO_TRIGGER_ON();
+            uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
+            *trigger = 1 << TRIGGER_CTRL_START;
 
-            // Execute operation with fixed input
-            uint32_t fixed_data = 0xDEADBEEF; // Example fixed input
-            printf("Trace %u: Fixed data operation with data: 0x%08X\n", i, fixed_data);
+            cv_xif_CUS_AND(&rs1, &rs2, &res);
 
             // De-activate trigger_GPIO
-            GPIO_TRIGGER_OFF();
+            asm volatile ("": : : "memory");
+            *trigger = 1 << TRIGGER_CTRL_STOP;
+            asm volatile ("": : : "memory");
+            }
+        else {
+            // Execute operation with fixed inputs
+            uint32_t rs1_fixed = 0xDEADBEEF;
+            uint32_t rs2_fixed = 0x01234567;
+            //printf("Trace %u: Fixed data operation with data: 0x%08X and 0x%08X\n", i, rs1_fixed, rs2_fixed);
+
+            // Activate trigger_GPIO
+            uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
+            *trigger = 1 << TRIGGER_CTRL_START;
+
+            cv_xif_CUS_AND(&rs1_fixed, &rs2_fixed, &res);
+
+            // De-activate trigger_GPIO
+            asm volatile ("": : : "memory");
+            *trigger = 1 << TRIGGER_CTRL_STOP;
+            asm volatile ("": : : "memory");
         }
     }
 
