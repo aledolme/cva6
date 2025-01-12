@@ -702,7 +702,72 @@ def run_c(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
 
     if len(iss_list) == 2:
         compare_iss_log(iss_list, log_list, report)
+import os
+import logging
 
+def generate_fpga_files(c_test, linker, gcc_opts, isa, mabi, output_dir):
+    """
+    Generate object file, ELF file, and disassembly for FPGA usage.
+
+    Args:
+        c_test      : C test file
+        linker      : Path to the linker script
+        gcc_opts    : GCC compilation options
+        isa         : ISA variant passed to GCC
+        mabi        : MABI variant passed to GCC
+        output_dir  : Directory to store the generated files
+    """
+    if not c_test.endswith(".c"):
+        logging.error("%s is not a .c file" % c_test)
+        return
+
+    cwd = os.path.dirname(os.path.realpath(__file__))
+    c_test = os.path.expanduser(c_test)
+    test_name = os.path.splitext(os.path.basename(c_test))[0]
+
+    # Define output paths
+    fpga_dir = os.path.join(output_dir, "FPGA")
+    os.makedirs(fpga_dir, exist_ok=True)
+
+    elf_path = os.path.join(fpga_dir, f"{test_name}.elf")
+    obj_path = os.path.join(fpga_dir, f"{test_name}.o")
+    disassembly_path = os.path.join(fpga_dir, f"{test_name}.s")
+
+    # Compile to ELF
+    logging.info("Compiling C test for FPGA: %s" % c_test)
+    cmd_compile = (
+        f"{get_env_var('RISCV_CC')} {c_test} -I{cwd}/dv/user_extension -T{linker} {gcc_opts} \
+        -o {elf_path} -march={isa} -mabi={mabi}"
+    )
+    run_cmd(cmd_compile)
+
+    # Generate object file
+    logging.info("Generating object file: %s" % obj_path)
+    cmd_objcopy = f"riscv64-unknown-elf-objcopy -O elf32-littleriscv {elf_path} {obj_path}"
+    run_cmd(cmd_objcopy)
+
+    # Generate disassembly file
+    logging.info("Generating disassembly: %s" % disassembly_path)
+    cmd_objdump = f"riscv64-unknown-elf-objdump -d {elf_path} > {disassembly_path}"
+    run_cmd(cmd_objdump)
+
+    logging.info("Files for FPGA are stored in: %s" % fpga_dir)
+
+# Utility function to get environment variables
+def get_env_var(var, default=None):
+    value = os.getenv(var)
+    if not value and default:
+        value = default
+    if not value:
+        raise RuntimeError(f"Environment variable {var} is not set.")
+    return value
+
+# Utility function to execute shell commands
+def run_cmd(cmd):
+    logging.debug("Executing command: %s" % cmd)
+    result = os.system(cmd)
+    if result != 0:
+        raise RuntimeError(f"Command failed: {cmd}")
 
 
 def run_c_from_dir(c_test_dir, iss_yaml, isa, mabi, gcc_opts, iss,
