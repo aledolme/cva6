@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 //start address
-#define TRIGGER0_BASE_ADDR 0x40010000
+#define TRIGGER0_BASE_ADDR 0x41000000
 // auto added parameter
 #define TRIGGER_PARAM_GPIO_O 1
 // Register width
