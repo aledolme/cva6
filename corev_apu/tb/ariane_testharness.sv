@@ -514,7 +514,8 @@ module ariane_testharness #(
   //ariane_axi_soc::resp_slv_t trigger_axi_resp;
   //`AXI_ASSIGN_TO_REQ(trigger_axi_req, master[ariane_soc::Trigger])
   //`AXI_ASSIGN_FROM_RESP(master[ariane_soc::Trigger], trigger_axi_resp)
-
+  logic trigger_gpio;
+  
   trigger_top #(
     .AXI_ADDR_WIDTH   ( AXI_ADDRESS_WIDTH),
     .AXI_ID_WIDTH     ( ariane_axi_soc::IdWidthSlave),
@@ -523,6 +524,7 @@ module ariane_testharness #(
     .clk_i        (clk_i),
     .rst_ni       (ndmreset_n),
     .test_mode_i  (test_en),
+    .trigger_o    (trigger_gpio),
     .axi_slave    (master[ariane_soc::Trigger])
   );
 

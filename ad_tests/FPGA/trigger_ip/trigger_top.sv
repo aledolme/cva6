@@ -1,5 +1,10 @@
-`include "/register_interface/typedef.svh"
-`include "/register_interface/assign.svh"
+`ifdef SYNTHESIS
+	`include "./register_interface/typedef.svh"
+	`include "./register_interface/assign.svh"
+`else
+	`include "/register_interface/typedef.svh"
+	`include "/register_interface/assign.svh"
+`endif
 
 module trigger_top
     	#(

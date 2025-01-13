@@ -18,6 +18,8 @@ set_property -dict { PACKAGE_PIN C11   IOSTANDARD LVCMOS33 } [get_ports { tms   
 set_property -dict {PACKAGE_PIN E13 IOSTANDARD LVCMOS33} [get_ports tx]
 set_property -dict {PACKAGE_PIN E15 IOSTANDARD LVCMOS33} [get_ports rx]
 
+## Trigger
+set_property -dict {PACKAGE_PIN T14 IOSTANDARD LVCMOS33} [get_ports trigger_gpio_o]
 
 ## LEDs
 set_property -dict {PACKAGE_PIN T4 IOSTANDARD LVCMOS33} [get_ports {led[0]}]

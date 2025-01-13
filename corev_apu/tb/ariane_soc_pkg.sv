@@ -49,7 +49,7 @@ package ariane_soc;
 `ifdef NEXYS_VIDEO
   localparam logic[63:0] DRAMLength     = 64'h20000000; // 512MByte of DDR on Nexys video board
 `elsif CW305
-  localparam logic[63:0] DRAMLength	= 64'h0; // No DDR available on CW305
+  localparam logic[63:0] DRAMLength	= 64'h80000; // No DDR available on CW305
 `else
   localparam logic[63:0] DRAMLength     = 64'h40000000; // 1GByte of DDR (split between two chips on Genesys2)
 `endif

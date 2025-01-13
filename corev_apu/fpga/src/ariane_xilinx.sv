@@ -52,6 +52,7 @@ module ariane_xilinx (
   input  logic	       cpu_resetn  ,
   output logic [ 2:0]  led	   ,
   input  logic [ 3:0]  sw	   ,
+  output logic         trigger_gpio_o,
 `elsif KC705
   input  logic         sys_clk_p   ,
   input  logic         sys_clk_n   ,
@@ -347,9 +348,25 @@ assign addr_map = '{
   '{ idx: ariane_soc::SPI,      start_addr: ariane_soc::SPIBase,      end_addr: ariane_soc::SPIBase + ariane_soc::SPILength           },
   '{ idx: ariane_soc::Ethernet, start_addr: ariane_soc::EthernetBase, end_addr: ariane_soc::EthernetBase + ariane_soc::EthernetLength },
   '{ idx: ariane_soc::GPIO,     start_addr: ariane_soc::GPIOBase,     end_addr: ariane_soc::GPIOBase + ariane_soc::GPIOLength         },
-  '{ idx: ariane_soc::DRAM,     start_addr: ariane_soc::DRAMBase,     end_addr: ariane_soc::DRAMBase + ariane_soc::DRAMLength         },
-  '{ idx: ariane_soc::Trigger,  start_addr: ariane_soc::TriggerBase,  end_addr: ariane_soc::TriggerBase + ariane_soc::TriggerLength   }
+  '{ idx: ariane_soc::Trigger,  start_addr: ariane_soc::TriggerBase,  end_addr: ariane_soc::TriggerBase + ariane_soc::TriggerLength   },
+  '{ idx: ariane_soc::DRAM,     start_addr: ariane_soc::DRAMBase,     end_addr: ariane_soc::DRAMBase + ariane_soc::DRAMLength         }
 };
+
+logic trigger_gpio;
+
+trigger_top #(
+  .AXI_ADDR_WIDTH   ( AxiAddrWidth),
+  .AXI_ID_WIDTH     ( AxiIdWidthSlaves),
+  .AXI_USER_WIDTH   ( AxiUserWidth)
+) i_trigger (
+  .clk_i        (clk_i),
+  .rst_ni       (ndmreset_n),
+  .test_mode_i  (test_en),
+  .trigger_o    (trigger_gpio),
+  .axi_slave    (master[ariane_soc::Trigger])
+);
+
+assign trigger_gpio_o = trigger_gpio;
 
 localparam axi_pkg::xbar_cfg_t AXI_XBAR_CFG = '{
   NoSlvPorts:         ariane_soc::NrSlaves,
@@ -1072,7 +1089,78 @@ xlnx_protocol_checker i_xlnx_protocol_checker (
 assign dram.r_user = '0;
 assign dram.b_user = '0;
 
-`ifndef CW305 
+`ifdef CW305 
+
+  AXI_BUS #(
+    .AXI_ADDR_WIDTH ( AxiAddrWidth            ),
+    .AXI_DATA_WIDTH ( AxiDataWidth               ),
+    .AXI_ID_WIDTH   ( AxiIdWidthSlaves ),
+    .AXI_USER_WIDTH ( AxiUserWidth             )
+  ) dram_delayed();
+
+  axi_multicut_intf #(
+    .ADDR_WIDTH      ( AxiAddrWidth            ),
+    .DATA_WIDTH      ( AxiDataWidth               ),
+    .USER_WIDTH      ( AxiUserWidth               ),
+    .ID_WIDTH	     ( AxiIdWidthSlaves		),
+    .NUM_CUTS  ( 1                            )
+  ) i_axi_delayer (
+    .clk_i  ( clk        ),
+    .rst_ni ( ndmreset_n   ),
+    .in    ( dram         ),
+    .out    ( dram_delayed )
+  );
+
+
+
+  axi2mem #(
+    .AXI_ID_WIDTH   ( AxiIdWidthSlaves),
+    .AXI_ADDR_WIDTH ( AxiAddrWidth            ),
+    .AXI_DATA_WIDTH ( AxiDataWidth               ),
+    .AXI_USER_WIDTH ( AxiUserWidth               )
+  ) i_axi2mem (
+    .clk_i  ( clk        ),
+    .rst_ni ( ndmreset_n   ),
+    .slave  ( dram_delayed ),
+    .req_o  ( req          ),
+    .we_o   ( we           ),
+    .addr_o ( addr         ),
+    .be_o   ( be           ),
+    .user_o ( wuser        ),
+    .data_o ( wdata        ),
+    .user_i ( ruser        ),
+    .data_i ( rdata        )
+  );
+  logic                         req;
+  logic                         we;
+  logic [AxiAddrWidth-1:0] addr;
+  logic [AxiDataWidth/8-1:0]  be;
+  logic [AxiDataWidth-1:0]    wdata;
+  logic [AxiDataWidth-1:0]    rdata;
+  logic [AxiUserWidth-1:0]    wuser;
+  logic [AxiUserWidth-1:0]    ruser;
+  localparam int NUM_WORDS = 8192;
+
+  sram #(
+    .DATA_WIDTH ( AxiDataWidth ),
+    .USER_WIDTH ( AxiUserWidth ),
+    .USER_EN    ( CVA6Cfg.AXI_USER_EN    ),
+    .SIM_INIT   ( "zeros"        ),
+    .NUM_WORDS  ( NUM_WORDS      ),
+    .OUT_REGS   ( 0		)
+  ) i_sram (
+    .clk_i      ( clk                                                                       ),
+    .rst_ni     ( ndmreset_n                                                                      ),
+    .req_i      ( req                                                                         ),
+    .we_i       ( we                                                                          ),
+    .addr_i     ( addr[$clog2(NUM_WORDS)-1+$clog2(AxiDataWidth/8):$clog2(AxiDataWidth/8)] ),
+    .wuser_i    ( wuser                                                                       ),
+    .wdata_i    ( wdata                                                                       ),
+    .be_i       ( be                                                                          ),
+    .ruser_o    ( ruser                                                                       ),
+    .rdata_o    ( rdata                                                                       )
+  );
+`else
 xlnx_axi_clock_converter i_xlnx_axi_clock_converter_ddr (
   .s_axi_aclk     ( clk              ),
   .s_axi_aresetn  ( ndmreset_n       ),
@@ -1158,8 +1246,6 @@ xlnx_axi_clock_converter i_xlnx_axi_clock_converter_ddr (
   .m_axi_rvalid   ( s_axi_rvalid     ),
   .m_axi_rready   ( s_axi_rready     )
 );
-`else
-
 `endif
 
 `ifdef NEXYS_VIDEO

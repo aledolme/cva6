@@ -124,7 +124,7 @@ ariane_pkg := \
               corev_apu/register_interface/src/reg_intf.sv           \
               corev_apu/tb/ariane_soc_pkg.sv                         \
               corev_apu/riscv-dbg/src/dm_pkg.sv                      \
-			  ad_tests/FPGA/trigger_ip/sv/trigger_reg_pkg.sv		 \
+	      ad_tests/FPGA/trigger_ip/sv/trigger_reg_pkg.sv		 \
               corev_apu/tb/ariane_axi_soc_pkg.sv
 ariane_pkg := $(addprefix $(root-dir), $(ariane_pkg))
 
@@ -166,8 +166,8 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         corev_apu/src/ariane.sv                                                      \
         $(wildcard corev_apu/bootrom/*.sv)                                           \
 		$(wildcard ad_tests/FPGA/trigger_ip/*.sv)                                    \
-		$(wildcard ad_tests/FPGA/trigger_ip/register_interface*.sv)                  \
-		$(wildcard ad_tests/FPGA/trigger_ip/register_interface*.svh)                 \
+		$(wildcard ad_tests/FPGA/trigger_ip/register_interface/*.sv)                  \
+		$(wildcard ad_tests/FPGA/trigger_ip/register_interface/*.svh)                 \
 		$(wildcard ad_tests/FPGA/trigger_ip/sv/*.sv)				                 \
 		$(wildcard vendor/lowrisc_opentitan/src/*.sv)				                 \
 		$(wildcard corev_apu/clint/*.sv)                                             \
@@ -190,6 +190,8 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         corev_apu/riscv-dbg/debug_rom/debug_rom.sv                                   \
         corev_apu/register_interface/src/apb_to_reg.sv                               \
         vendor/pulp-platform/axi/src/axi_multicut.sv                                 \
+	vendor/pulp-platform/common_cells/src/id_queue.sv			     \
+	vendor/pulp-platform/common_cells/src/onehot_to_bin.sv			     \
         vendor/pulp-platform/common_cells/src/rstgen_bypass.sv                       \
         vendor/pulp-platform/common_cells/src/rstgen.sv                              \
         vendor/pulp-platform/common_cells/src/addr_decode.sv                         \
