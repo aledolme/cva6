@@ -25,21 +25,26 @@ int main() {
 
     //while(1){
         // Activate trigger_GPIO
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_START;
-        // De-activate trigger_GPIO
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
     //}
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_START;
-        // De-activate trigger_GPIO
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_START;
-        // De-activate trigger_GPIO
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_START;
-        // De-activate trigger_GPIO
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_START;
-        // De-activate trigger_GPIO
+        asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
 
     return 0;
