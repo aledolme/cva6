@@ -67,7 +67,7 @@ package ariane_soc;
     SPIBase      = 64'h2000_0000,
     EthernetBase = 64'h3000_0000,
     GPIOBase     = 64'h4000_0000,
-    TriggerBase  = 64'h4001_0000,
+    TriggerBase  = 64'h4100_0000,
     DRAMBase     = 64'h8000_0000
   } soc_bus_start_t;
 

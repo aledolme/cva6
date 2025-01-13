@@ -9,7 +9,7 @@
 module trigger_top
     	#(
 	 parameter int unsigned AXI_ADDR_WIDTH = 32,
-	 localparam int unsigned AXI_DATA_WIDTH = 32, 
+	 parameter int unsigned AXI_DATA_WIDTH = 32, 
 	 parameter int unsigned AXI_ID_WIDTH,
 	 parameter int unsigned AXI_USER_WIDTH
      	)
@@ -27,7 +27,7 @@ module trigger_top
 
 	 		
 	// Wiring signals between reg file and ip
-	REG_BUS #(.ADDR_WIDTH(32), .DATA_WIDTH(32)) axi_to_regfile();
+	REG_BUS #(.ADDR_WIDTH(AXI_ADDR_WIDTH), .DATA_WIDTH(AXI_DATA_WIDTH)) axi_to_regfile();
 	trigger_hw2reg_t ip_to_reg_file;
 	trigger_reg2hw_t reg_file_to_ip;
 

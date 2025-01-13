@@ -356,10 +356,11 @@ logic trigger_gpio;
 
 trigger_top #(
   .AXI_ADDR_WIDTH   ( AxiAddrWidth),
+  .AXI_DATA_WIDTH   ( AxiDataWidth),
   .AXI_ID_WIDTH     ( AxiIdWidthSlaves),
   .AXI_USER_WIDTH   ( AxiUserWidth)
 ) i_trigger (
-  .clk_i        (clk_i),
+  .clk_i        (clk),
   .rst_ni       (ndmreset_n),
   .test_mode_i  (test_en),
   .trigger_o    (trigger_gpio),
