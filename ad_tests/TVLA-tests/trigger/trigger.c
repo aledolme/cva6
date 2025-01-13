@@ -10,13 +10,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "trigger_auto.h"
+#include "uart.h"
 
 
 //**********************MAIN******************************************/
 int main() {
 
 
-    uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
+    /*uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
 
     //Putting low the trigger
     asm volatile ("": : : "memory");
@@ -46,6 +47,9 @@ int main() {
         *trigger = 1 << TRIGGER_CTRL_START;
         asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
+        */
+
+       print_uart("Hi Telsy! :)");
 
     return 0;
 }
