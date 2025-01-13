@@ -21,6 +21,7 @@ ENTRY(_start)
 MEMORY
 {
   ram (rwx) : ORIGIN = 0x80000000, LENGTH = 0x10000
+  stack (rw) : ORIGIN = 0x80002000, LENGTH = 0x800
 }
 
 SECTIONS
@@ -67,6 +68,13 @@ SECTIONS
     *(.tbss)
     _tbss_end = .;
   }
+
+  .stack   (NOLOAD): 
+  {
+   __stack_start = .;
+   . = 0x800;
+   __stack_end = .;
+  } > stack
 
   /* End of uninitalized data segement */
   _end = .;

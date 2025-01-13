@@ -17,39 +17,41 @@
 int main() {
 
 
-    /*uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
+    uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
 
     //Putting low the trigger
     asm volatile ("": : : "memory");
     *trigger = 1 << TRIGGER_CTRL_STOP;
     asm volatile ("": : : "memory");
 
-    //while(1){
+    while(1){
         // Activate trigger_GPIO
         asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_START;
         asm volatile ("": : : "memory");
         *trigger = 1 << TRIGGER_CTRL_STOP;
-    //}
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_START;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_STOP;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_START;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_STOP;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_START;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_STOP;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_START;
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_STOP;
-        */
+    }
+    /*
 
-       print_uart("Hi Telsy! :)");
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_START;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_STOP;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_START;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_STOP;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_START;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_STOP;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_START;
+        asm volatile ("": : : "memory");
+        *trigger = 1 << TRIGGER_CTRL_STOP;
+        
+
+       print_uart("Hi Telsy! :)");*/
 
     return 0;
 }
