@@ -45,11 +45,10 @@ int main() {
 
     read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
+    AES_EncryptInit(&ctx, key, iv);
 
     while(1){
         uint32_t num_traces = read_uint32_from_uart();
-
-        AES_EncryptInit(&ctx, key, iv);
 
         for (uint32_t i = 0; i < num_traces; i++) {
             
@@ -66,6 +65,7 @@ int main() {
                 //print_uart(" ");
             }
         }
+        init_uart(freq, baud);
     }
 
 
