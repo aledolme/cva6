@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Make sure to source this script from the root directory 
 # to correctly set the environment variables related to the tools
 source ./verif/sim/setup-env.sh
@@ -16,12 +14,10 @@ cd ./verif/sim
 
 # sv39 is structure of the virtual memory
 # core/include i can change the configuration
-
-# Call Python script to create .elf and .s files
 python3 -c "
 from cva6 import generate_fpga_files
 # Define parameters
-c_test = '../../ad_tests/TVLA-tests/trigger/trigger.c'
+c_test = '../../ad_tests/TVLA-tests/CV-X-IF/no_uart/cus_OR/cus_OR_nouart.c'
 linker = '../tests/custom/common/test.ld'
 gcc_opts = '-static -mcmodel=medany -fvisibility=hidden -O0 -nostartfiles -g ../tests/custom/common/syscalls.c ../tests/custom/common/crt.S -lgcc -I../tests/custom/env -I../tests/custom/common'
 output_dir = './FPGA_output'

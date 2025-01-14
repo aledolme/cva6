@@ -16,7 +16,7 @@ cd ./verif/sim
 # core/include i can change the configuration
 
 python3 cva6.py --target cv64a6_imafdc_sv39 --iss=$DV_SIMULATORS --iss_yaml=cva6.yaml \
---c_tests ../../ad_tests/TVLA-tests/cus_XOR/cus_XOR.c \
+--c_tests ../../ad_tests/TVLA-tests/CV-X-IF/no_uart/cus_OR/cus_OR_nouart.c \
 --linker=../tests/custom/common/test.ld \
 --gcc_opts="-static -mcmodel=medany -fvisibility=hidden -O0 \
 -nostartfiles -g ../tests/custom/common/syscalls.c \

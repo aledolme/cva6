@@ -606,6 +606,60 @@ def run_elf(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
   if len(iss_list) == 2:
     compare_iss_log(iss_list, log_list, report)
 
+def generate_fpga_files(c_test, linker, gcc_opts, isa, mabi, output_dir):
+    """
+    Generate object file, ELF file, and disassembly for FPGA usage.
+    Args:
+        c_test      : C test file
+        linker      : Path to the linker script
+        gcc_opts    : GCC compilation options
+        isa         : ISA variant passed to GCC
+        mabi        : MABI variant passed to GCC
+        output_dir  : Directory to store the generated files
+    """
+    if not c_test.endswith(".c"):
+        logging.error("%s is not a .c file" % c_test)
+        return
+
+    cwd = os.path.dirname(os.path.realpath(__file__))
+    c_test = os.path.expanduser(c_test)
+    test_name = os.path.splitext(os.path.basename(c_test))[0]
+
+    # Define output paths
+    ad_tests_dir = os.path.join(cwd, "../../ad_tests")
+    cw305_dir = os.path.join(ad_tests_dir, "CW305_files")
+
+    elf_dir = os.path.join(cw305_dir, "elf")
+    obj_dir = os.path.join(cw305_dir, "obj")
+    disassembly_dir = os.path.join(cw305_dir, "disassembly")
+
+    os.makedirs(elf_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
+    os.makedirs(disassembly_dir, exist_ok=True)
+
+    elf_path = os.path.join(elf_dir, f"{test_name}.elf")
+    obj_path = os.path.join(obj_dir, f"{test_name}.o")
+    disassembly_path = os.path.join(disassembly_dir, f"{test_name}.s")
+
+    # Compile to ELF
+    logging.info("Compiling C test for FPGA: %s" % c_test)
+    cmd_compile = (
+        f"{get_env_var('RISCV_CC')} {c_test} -I{cwd}/dv/user_extension -T{linker} {gcc_opts} \
+        -o {elf_path} -march={isa} -mabi={mabi}"
+    )
+    run_cmd(cmd_compile)
+
+    # Generate object file
+    logging.info("Generating object file: %s" % obj_path)
+    cmd_objcopy = f"riscv64-unknown-elf-objcopy -O elf32-littleriscv {elf_path} {obj_path}"
+    run_cmd(cmd_objcopy)
+
+    # Generate disassembly file
+    logging.info("Generating disassembly: %s" % disassembly_path)
+    cmd_objdump = f"riscv64-unknown-elf-objdump -d {elf_path} > {disassembly_path}"
+    run_cmd(cmd_objdump)
+
+    logging.info("Files for FPGA are stored in: %s" % cw305_dir)
 def run_c(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
           setting_dir, debug_cmd, linker, priv, spike_params, test_name=None, iss_timeout=500, testlist="custom"):
     """Run a directed c test with ISS
