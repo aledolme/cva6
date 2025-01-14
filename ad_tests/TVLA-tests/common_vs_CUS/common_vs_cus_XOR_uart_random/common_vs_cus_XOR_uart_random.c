@@ -78,8 +78,8 @@ int main() {
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
 
     AES_EncryptInit(&ctx, key, iv);
-    uint32_t rs1 = 0xDEADBEEF;
-    uint32_t rs2 = 0x01234567;
+    //uint32_t rs1 = 0xDEADBEEF;
+    //uint32_t rs2 = 0x01234567;
 
     while(1){
         uint32_t num_traces = read_uint32_from_uart();
@@ -89,6 +89,9 @@ int main() {
             AES_Encrypt(&ctx, plaintext, ciphertext); 
 
             // Determine case based on LSB of the ciphertext
+            uint32_t rs1 = *(uint32_t *)&ciphertext[4];  // Second 4 bytes as rs1
+            uint32_t rs2 = *(uint32_t *)&ciphertext[8];  // Next 4 bytes as rs2
+
             int lsb_check = ciphertext[0] & 0x01; // Check the LSB of the last byte (most significant byte of the 128-bit value)
             if (lsb_check) {
                 // Activate trigger_GPIO
