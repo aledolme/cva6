@@ -7111,24 +7111,26 @@ Disassembly of section .text:
     80007cea:	85ba                	mv	a1,a4
     80007cec:	853e                	mv	a0,a5
     80007cee:	b12fb0ef          	jal	ra,80003000 <AES_EncryptInit>
-    80007cf2:	deadc7b7          	lui	a5,0xdeadc
-    80007cf6:	eef78793          	addi	a5,a5,-273 # ffffffffdeadbeef <__global_pointer$+0xffffffff5eacfcff>
-    80007cfa:	e8f42a23          	sw	a5,-364(s0)
-    80007cfe:	012347b7          	lui	a5,0x1234
-    80007d02:	56778793          	addi	a5,a5,1383 # 1234567 <buflen.2+0x12344e7>
-    80007d06:	e8f42823          	sw	a5,-368(s0)
-    80007d0a:	e73ff0ef          	jal	ra,80007b7c <read_uint32_from_uart>
-    80007d0e:	87aa                	mv	a5,a0
-    80007d10:	fcf42a23          	sw	a5,-44(s0)
-    80007d14:	fe042623          	sw	zero,-20(s0)
-    80007d18:	a861                	j	80007db0 <main+0x164>
-    80007d1a:	f9040693          	addi	a3,s0,-112
-    80007d1e:	f7040713          	addi	a4,s0,-144
-    80007d22:	e9840793          	addi	a5,s0,-360
-    80007d26:	8636                	mv	a2,a3
-    80007d28:	85ba                	mv	a1,a4
-    80007d2a:	853e                	mv	a0,a5
-    80007d2c:	e1bfb0ef          	jal	ra,80003b46 <AES_Encrypt>
+    80007cf2:	e8bff0ef          	jal	ra,80007b7c <read_uint32_from_uart>
+    80007cf6:	87aa                	mv	a5,a0
+    80007cf8:	fcf42a23          	sw	a5,-44(s0)
+    80007cfc:	fe042623          	sw	zero,-20(s0)
+    80007d00:	a845                	j	80007db0 <main+0x164>
+    80007d02:	f9040693          	addi	a3,s0,-112
+    80007d06:	f7040713          	addi	a4,s0,-144
+    80007d0a:	e9840793          	addi	a5,s0,-360
+    80007d0e:	8636                	mv	a2,a3
+    80007d10:	85ba                	mv	a1,a4
+    80007d12:	853e                	mv	a0,a5
+    80007d14:	e33fb0ef          	jal	ra,80003b46 <AES_Encrypt>
+    80007d18:	f9040793          	addi	a5,s0,-112
+    80007d1c:	0791                	addi	a5,a5,4
+    80007d1e:	439c                	lw	a5,0(a5)
+    80007d20:	e8f42a23          	sw	a5,-364(s0)
+    80007d24:	f9040793          	addi	a5,s0,-112
+    80007d28:	07a1                	addi	a5,a5,8
+    80007d2a:	439c                	lw	a5,0(a5)
+    80007d2c:	e8f42823          	sw	a5,-368(s0)
     80007d30:	f9044783          	lbu	a5,-112(s0)
     80007d34:	2781                	sext.w	a5,a5
     80007d36:	8b85                	andi	a5,a5,1
@@ -7177,8 +7179,8 @@ Disassembly of section .text:
     80007db6:	fd442783          	lw	a5,-44(s0)
     80007dba:	2701                	sext.w	a4,a4
     80007dbc:	2781                	sext.w	a5,a5
-    80007dbe:	f4f76ee3          	bltu	a4,a5,80007d1a <main+0xce>
-    80007dc2:	b7a1                	j	80007d0a <main+0xbe>
+    80007dbe:	f4f762e3          	bltu	a4,a5,80007d02 <main+0xb6>
+    80007dc2:	bf05                	j	80007cf2 <main+0xa6>
 
 0000000080007dc4 <verify>:
     80007dc4:	715d                	addi	sp,sp,-80
