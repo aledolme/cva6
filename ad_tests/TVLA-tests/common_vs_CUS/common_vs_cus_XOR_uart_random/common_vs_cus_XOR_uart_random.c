@@ -88,12 +88,12 @@ int main() {
             
             AES_Encrypt(&ctx, plaintext, ciphertext); 
 
-            // Determine case based on LSB of the ciphertext
-            uint32_t rs1 = *(uint32_t *)&ciphertext[4];  // Second 4 bytes as rs1
-            uint32_t rs2 = *(uint32_t *)&ciphertext[8];  // Next 4 bytes as rs2
-
             int lsb_check = ciphertext[0] & 0x01; // Check the LSB of the last byte (most significant byte of the 128-bit value)
             if (lsb_check) {
+                // Determine case based on LSB of the ciphertext
+                uint32_t rs1 = *(uint32_t *)&ciphertext[4];  // Second 4 bytes as rs1
+                uint32_t rs2 = *(uint32_t *)&ciphertext[8];  // Next 4 bytes as rs2
+
                 // Activate trigger_GPIO
                 uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
                 *trigger = 1 << TRIGGER_CTRL_START;
@@ -106,6 +106,9 @@ int main() {
                 asm volatile ("": : : "memory");
                 }
             else {
+                // Determine case based on LSB of the ciphertext
+                uint32_t rs1 = *(uint32_t *)&ciphertext[4];  // Second 4 bytes as rs1
+                uint32_t rs2 = *(uint32_t *)&ciphertext[8];  // Next 4 bytes as rs2
 
                 // Activate trigger_GPIO
                 uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
