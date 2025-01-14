@@ -48,10 +48,10 @@ int main() {
     read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
     // Confirm the entire seed_input was received
     //print_uart("Seed input received:\n");
-    for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
-        print_uart_byte(seed_input[i]);
-        //print_uart(" ");
-    }
+    //for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
+    //    print_uart_byte(seed_input[i]);
+    //    print_uart(" ");
+    //}
     //print_uart("\n");
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
 
