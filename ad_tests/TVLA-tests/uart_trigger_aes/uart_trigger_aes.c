@@ -50,8 +50,6 @@ int main() {
     while(1){
         uint32_t num_traces = read_uint32_from_uart();
 
-
-
         for (uint32_t i = 0; i < num_traces; i++) {
             
             AES_Encrypt(&ctx, plaintext, ciphertext);      
@@ -62,10 +60,10 @@ int main() {
             *trigger = 1 << TRIGGER_CTRL_STOP;
             asm volatile ("": : : "memory");
 
-            for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
-                print_uart_byte(ciphertext[i]);
-                //print_uart(" ");
-            }
+            //for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
+            //    print_uart_byte(ciphertext[i]);
+            //    //print_uart(" ");
+            //}
         }
     }
 

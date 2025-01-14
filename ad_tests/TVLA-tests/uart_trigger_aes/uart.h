@@ -151,6 +151,7 @@ static void read_seed_input_from_uart(uint8_t *seed_input, size_t size) {
 
 // Function to read a 32-bit integer (uint32_t) from UART
 static uint32_t read_uint32_from_uart() {
+    
     uint32_t value = 0;
     for (int i = 0; i < 4; i++) {
         uint8_t byte_received;
