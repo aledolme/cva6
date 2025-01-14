@@ -43,24 +43,24 @@ int main() {
     init_uart(freq, baud);
 
     // Test: Print a string over UART
-    print_uart("Hello, UART!\n");
+    //print_uart("Hello, UART!\n");
 
     read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
     // Confirm the entire seed_input was received
-    print_uart("Seed input received:\n");
+    //print_uart("Seed input received:\n");
     for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
         print_uart_byte(seed_input[i]);
-        print_uart(" ");
+        //print_uart(" ");
     }
-    print_uart("\n");
+    //print_uart("\n");
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
 
-    print_uart("Please send the number of traces (4 bytes):\n");
+    //print_uart("Please send the number of traces (4 bytes):\n");
     uint32_t num_traces = read_uint32_from_uart();
     //uint32_t num_traces = 1;
-    print_uart("Number of traces received: ");
-    print_uart_int(num_traces);
-    print_uart("\n");
+    //print_uart("Number of traces received: ");
+    //print_uart_int(num_traces);
+    //print_uart("\n");
 
     AES_EncryptInit(&ctx, key, iv);
 
@@ -76,7 +76,7 @@ int main() {
 
         for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
             print_uart_byte(ciphertext[i]);
-            print_uart(" ");
+            //print_uart(" ");
         }
     }
 
