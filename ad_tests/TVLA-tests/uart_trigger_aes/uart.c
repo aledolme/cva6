@@ -141,8 +141,7 @@ void print_uart_addr(uint64_t addr)
 
 void print_uart_byte(uint8_t byte)
 {
-    uint8_t hex[2];
-    bin_to_hex(byte, hex);
-    write_serial(hex[0]);
-    write_serial(hex[1]);
+    //uint8_t hex[2];
+    //bin_to_hex(byte, hex);
+    write_serial(byte);
 }
