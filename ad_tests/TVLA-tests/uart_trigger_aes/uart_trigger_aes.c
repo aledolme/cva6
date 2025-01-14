@@ -46,25 +46,28 @@ int main() {
     read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
 
-    uint32_t num_traces = read_uint32_from_uart();
+    while(1){
+        uint32_t num_traces = read_uint32_from_uart();
 
-    AES_EncryptInit(&ctx, key, iv);
+        AES_EncryptInit(&ctx, key, iv);
 
-    for (uint32_t i = 0; i < num_traces; i++) {
-        
-        AES_Encrypt(&ctx, plaintext, ciphertext);      
-        uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
-        *trigger = 1 << TRIGGER_CTRL_START;
+        for (uint32_t i = 0; i < num_traces; i++) {
+            
+            AES_Encrypt(&ctx, plaintext, ciphertext);      
+            uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
+            *trigger = 1 << TRIGGER_CTRL_START;
 
-        asm volatile ("": : : "memory");
-        *trigger = 1 << TRIGGER_CTRL_STOP;
-        asm volatile ("": : : "memory");
+            asm volatile ("": : : "memory");
+            *trigger = 1 << TRIGGER_CTRL_STOP;
+            asm volatile ("": : : "memory");
 
-        for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
-            print_uart_byte(ciphertext[i]);
-            //print_uart(" ");
+            for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
+                print_uart_byte(ciphertext[i]);
+                //print_uart(" ");
+            }
         }
     }
+
 
 
     return 0;
