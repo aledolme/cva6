@@ -50,6 +50,8 @@ int main() {
     while(1){
         uint32_t num_traces = read_uint32_from_uart();
 
+
+
         for (uint32_t i = 0; i < num_traces; i++) {
             
             AES_Encrypt(&ctx, plaintext, ciphertext);      
@@ -65,7 +67,6 @@ int main() {
                 //print_uart(" ");
             }
         }
-        init_uart(freq, baud);
     }
 
 
