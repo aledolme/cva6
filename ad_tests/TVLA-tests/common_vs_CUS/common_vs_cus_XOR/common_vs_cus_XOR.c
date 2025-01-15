@@ -57,7 +57,6 @@ int main() {
     };
     uint8_t ciphertext[AES_BLOCK_SIZE];     // Cipertext to be saved between on execution and another
     uint8_t plaintext[32] = {0};            //Plaintext is always zero
-    uint8_t seed_input[AES_BLOCK_SIZE] = {0};
     uint32_t res;
 
     AES_CTX ctx;
@@ -68,21 +67,26 @@ int main() {
     asm volatile ("": : : "memory");
 
     //Initialization UART
-    uint32_t freq, baud;  //TO BE SET
-    freq = 50000000;    //50 MHz
-    baud = 115200;      //115200 bps
-    init_uart(freq, baud);
+    //uint32_t freq, baud;  //TO BE SET
+    //freq = 50000000;    //50 MHz
+    //baud = 115200;      //115200 bps
+    //init_uart(freq, baud);
 
     // Read seed input from UART
-    read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
+    //read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
+    uint8_t seed_input[AES_BLOCK_SIZE*2] = {
+        0x0f, 0x47, 0x0e, 0x7f, 0x75, 0x9c, 0x47, 0x0f,
+        0x42, 0xc6, 0xd3, 0x9c, 0xbc, 0x8e, 0x23, 0x25
+    };
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
 
     AES_EncryptInit(&ctx, key, iv);
     uint32_t rs1 = 0xDEADBEEF;
     uint32_t rs2 = 0x01234567;
 
-    while(1){
-        uint32_t num_traces = read_uint32_from_uart();
+    //while(1){
+        //uint32_t num_traces = read_uint32_from_uart();
+        uint32_t num_traces = 20;
 
         for (uint32_t i = 0; i < num_traces; i++) {
             
@@ -117,7 +121,7 @@ int main() {
                 asm volatile ("": : : "memory");
             }
         }
-    }
+    //}
 
     return 0;
 }
