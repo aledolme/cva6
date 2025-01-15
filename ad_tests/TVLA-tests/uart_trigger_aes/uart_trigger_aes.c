@@ -42,7 +42,6 @@ int main() {
     baud = 115200;      //115200 bps
     init_uart(freq, baud);
 
-
     read_seed_input_from_uart(seed_input, AES_BLOCK_SIZE);
     memcpy(iv, seed_input, AES_BLOCK_SIZE);
     AES_EncryptInit(&ctx, key, iv);
@@ -59,15 +58,8 @@ int main() {
             asm volatile ("": : : "memory");
             *trigger = 1 << TRIGGER_CTRL_STOP;
             asm volatile ("": : : "memory");
-
-            //for (size_t i = 0; i < AES_BLOCK_SIZE; i++) {
-            //    print_uart_byte(ciphertext[i]);
-            //    //print_uart(" ");
-            //}
         }
     }
-
-
 
     return 0;
 }
