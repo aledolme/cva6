@@ -168,7 +168,7 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
 		$(wildcard ad_tests/FPGA/trigger_ip/*.sv)                                    \
 		$(wildcard ad_tests/FPGA/trigger_ip/register_interface/*.sv)                  \
 		$(wildcard ad_tests/FPGA/trigger_ip/register_interface/*.svh)                 \
-		$(wildcard ad_tests/FPGA/trigger_ip/sv/*.sv)				                 \
+		$(wildcard ad_tests/FPGA/trigger_ip/sv/trigger_reg_top.sv)				                 \
 		$(wildcard vendor/lowrisc_opentitan/src/*.sv)				                 \
 		$(wildcard corev_apu/clint/*.sv)                                             \
         $(wildcard corev_apu/fpga/src/axi2apb/src/*.sv)                              \
@@ -277,6 +277,7 @@ incdir := $(CVA6_REPO_DIR)/vendor/pulp-platform/common_cells/include/ $(CVA6_REP
           $(CVA6_REPO_DIR)/vendor/pulp-platform/axi/include/ \
           $(CVA6_REPO_DIR)/ad_tests/FPGA/trigger_ip/register_interface/ \
           $(CVA6_REPO_DIR)/ad_tests/FPGA/trigger_ip/ \
+	      $(CVA6_REPO_DIR)/ad_tests/FPGA/trigger_ip/sv/	\
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_agents/uvma_rvfi/ \
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_components/uvmc_rvfi_reference_model/ \
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_components/uvmc_rvfi_scoreboard/ \
@@ -612,7 +613,7 @@ xrun-check-benchmarks:
 xrun-ci: xrun-asm-tests xrun-amo-tests xrun-mul-tests xrun-fp-tests xrun-benchmarks
 
 # verilator-specific
-verilate_command := $(verilator) --no-timing verilator_config.vlt                                                \
+verilate_command := $(verilator) --debug --no-unlimited-stack --no-timing verilator_config.vlt                                                \
                     -f core/Flist.cva6                                                                           \
                     core/cva6_rvfi.sv                                                                            \
                     $(filter-out %.vhd, $(ariane_pkg))                                                           \
