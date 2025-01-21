@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Mon Jan 20 14:35:44 2025
+[*] Tue Jan 21 09:10:01 2025
 [*]
-[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-01-20/veri-testharness_sim/XOR.cv64a6_imafdc_sv39.vcd"
-[dumpfile_mtime] "Mon Jan 20 14:34:10 2025"
-[dumpfile_size] 215217256
+[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-01-21/veri-testharness_sim/XOR.cv64a6_imafdc_sv39.vcd"
+[dumpfile_mtime] "Tue Jan 21 09:03:20 2025"
+[dumpfile_size] 215132004
 [savefile] "/home/a.dolmeta/cva6/ad_tests/wave_trigger.gtkw"
-[timestart] 10010
-[size] 2560 1369
-[pos] -2569 -304
-*-2.000000 10027 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[timestart] 9982
+[size] 1920 1009
+[pos] 1911 -9
+*-4.000000 10027 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] ariane_testharness.
 [treeopen] ariane_testharness.i_ariane.
 [treeopen] ariane_testharness.i_ariane.cvxif_example_coprocessor.
@@ -23,7 +23,7 @@
 [sst_width] 355
 [signals_width] 375
 [sst_expanded] 1
-[sst_vpaned_height] 422
+[sst_vpaned_height] 397
 @28
 [color] 1
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.clk_i
@@ -108,21 +108,38 @@ ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_
 @22
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.registers_o[0][63:0]
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.registers_o[1][63:0]
+@28
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_accept
+@22
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_hartid[63:0]
+@28
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_id[2:0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_issue_ready
+@22
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_opcode[3:0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_rd[4:0]
+@28
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.temp_register_read[2:0]
+@200
+-output instr_decoder
+@22
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.registers_o[0][63:0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.registers_o[1][63:0]
+@24
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.rd_o[4:0]
+@28
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.opcode_o[3:0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.issue_resp_o.accept
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.issue_resp_o.register_read[1:0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.issue_resp_o.writeback[0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.id_o[2:0]
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.issue_ready_o
+@23
+ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.instr_decoder_i.hartid_o[63:0]
 @200
 -copro_alu
-@28
-[color] 6
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.cus_insn_en
-[color] 3
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.issue_ready_i
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.count_enable
-@24
-[color] 5
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.count[31:0]
-[color] 5
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.threshold_q[4:0]
 @22
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.threshold[4:0]
+[color] 5
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.opcode_i[3:0]
 [color] 7
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.result_n[63:0]
@@ -141,13 +158,6 @@ ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copr
 ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.opcode_i[3:0]
 @200
 -XOR_delayed
-@23
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.u_xor_with_delay.registers_1[31:0]
-@22
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.u_xor_with_delay.registers_0[31:0]
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.u_xor_with_delay.result_n[31:0]
-ariane_testharness.i_ariane.cvxif_example_coprocessor.i_cvxif_coprocessor.i_copro_alu.u_xor_with_delay.delayed_result[0][31:0]
-@200
 -RF
 @28
 [color] 1

@@ -7,6 +7,8 @@
 //
 // Original Author: Guillaume Chauvon
 
+// Modified by: Alessandra Dolmeta
+
 module cvxif_example_coprocessor
   import cvxif_instr_pkg::*;
 #(

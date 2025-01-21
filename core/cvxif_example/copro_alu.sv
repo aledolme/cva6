@@ -7,6 +7,8 @@
 //
 // Original Author: Guillaume Chauvon
 
+// Modified by: Alessandra Dolmeta
+
 module copro_alu
   import cvxif_instr_pkg::*;
 #(
