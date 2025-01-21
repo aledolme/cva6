@@ -660,6 +660,8 @@ def generate_fpga_files(c_test, linker, gcc_opts, isa, mabi, output_dir):
     run_cmd(cmd_objdump)
 
     logging.info("Files for FPGA are stored in: %s" % cw305_dir)
+
+
 def run_c(c_test, iss_yaml, isa, target, mabi, gcc_opts, iss_opts, output_dir,
           setting_dir, debug_cmd, linker, priv, spike_params, test_name=None, iss_timeout=500, testlist="custom"):
     """Run a directed c test with ISS

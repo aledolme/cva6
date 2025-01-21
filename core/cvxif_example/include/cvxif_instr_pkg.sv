@@ -25,7 +25,19 @@ package cvxif_instr_pkg;
     AND         = 4'b1010
   } opcode_t;
 
-
+  // Thresholds for each opcode
+  localparam logic [31:0] THRESHOLD_ILLEGAL     = 0;
+  localparam logic [31:0] THRESHOLD_NOP         = 0;
+  localparam logic [31:0] THRESHOLD_ADD         = 0;
+  localparam logic [31:0] THRESHOLD_DOUBLE_RS1  = 0;
+  localparam logic [31:0] THRESHOLD_DOUBLE_RS2  = 0;
+  localparam logic [31:0] THRESHOLD_ADD_MULTI   = 0;
+  localparam logic [31:0] THRESHOLD_ADD_RS3_R4  = 0;
+  localparam logic [31:0] THRESHOLD_ADD_RS3_R   = 0;
+  localparam logic [31:0] THRESHOLD_XOR         = 2;
+  localparam logic [31:0] THRESHOLD_OR          = 0;
+  localparam logic [31:0] THRESHOLD_AND         = 0;
+  
   typedef struct packed {
     logic accept;
     logic writeback;  // TODO depends on dualwrite

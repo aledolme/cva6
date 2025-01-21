@@ -17,7 +17,7 @@ cd ./verif/sim
 python3 -c "
 from cva6 import generate_fpga_files
 # Define parameters
-c_test = '../../ad_tests/TVLA-tests/common_vs_CUS/common_vs_cus_XOR/common_vs_cus_XOR.c'
+c_test = '../../ad_tests/sim/cus_XOR/XOR/XOR.c'
 linker = '../tests/custom/common/test.ld'
 gcc_opts = '-static -mcmodel=medany -fvisibility=hidden -O0 -nostartfiles -g ../tests/custom/common/syscalls.c ../tests/custom/common/crt.S -lgcc -I../tests/custom/env -I../tests/custom/common'
 output_dir = './FPGA_output'
