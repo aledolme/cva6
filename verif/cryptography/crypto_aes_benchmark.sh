@@ -38,3 +38,4 @@ GCC_OPTS="${GCC_CFLAGS[*]} ${GCC_COMMON_SRC[*]}"
 python3 cva6.py $CVA6_FLAGS --c_tests $BDIR/scalar/aes.c  --isa_extension zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh  --gcc_opts "$GCC_OPTS -I$BDIR/scalar/    $BDIR/scalar/main.c"
 
 cd -
+
