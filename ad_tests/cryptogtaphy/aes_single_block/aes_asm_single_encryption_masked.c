@@ -25,14 +25,15 @@ int main(int argc, char* arg[])
     uint32_t rs1_fixed = 0xDEADBEEF;
     uint32_t rs2_fixed = 0xDEADBEEF;
 
-    //Putting low the trigger
-    asm volatile ("": : : "memory");
+
     *trigger = 1 << TRIGGER_CTRL_START;
-    asm volatile ("": : : "memory");
-
+ 
     cv_xif_prng_init(&rs1_fixed, &rs2_fixed);
+    AES_ENC_masked(pt, key);
 
+    asm volatile (".insn r 0x7B, 1, 7, x0, x0, x0\n" : : : );
 
+    *trigger = 1 << TRIGGER_CTRL_STOP;
 
     return 0;
 }

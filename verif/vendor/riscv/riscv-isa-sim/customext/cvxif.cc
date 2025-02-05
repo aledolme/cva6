@@ -72,6 +72,12 @@ class cvxif_t : public cvxif_extn_t
             return true;
           case Func7::CUS_PRNG3:
             return true;
+          case Func7::CUS_LOAD:
+            return true;
+          case Func7::CUS_STORE:
+            return true;
+          case Func7::CUS_XOR_R:
+            return true;
           default:
             return false;
         }

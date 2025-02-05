@@ -10,7 +10,7 @@ module simple_prng (
     input  logic        init_i, 
     input  logic        en_i,       // Enable input
     input  logic [127:0] seed_i,    // 128-bit seed
-    output logic [63:0]  prng_o // 64-bit pseudo-random output
+    output logic [127:0]  prng_o // 64-bit pseudo-random output
 );
 
     logic [127:0] lfsr;
@@ -25,6 +25,6 @@ module simple_prng (
         end
     end
 
-    assign prng_o = {lfsr[62:0], lfsr[127] ^ lfsr[63] ^ lfsr[31] ^ lfsr[0]};
+    assign prng_o = lfsr;
 
 endmodule

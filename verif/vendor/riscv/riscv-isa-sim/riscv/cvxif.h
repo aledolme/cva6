@@ -63,7 +63,7 @@ union cvxif_insn_t
 };
 
 enum Func3 {FUNC3_0, FUNC3_1, FUNC3_2, FUNC3_3};
-enum Func7 {CUS_ADD = 0, CUS_DOUBLE_RS1 = 1, CUS_DOUBLE_RS2 = 2, CUS_ADD_MULTICYCLE = 3, CUS_PRNG1 = 5, CUS_PRNG2 = 6, CUS_PRNG3 = 7};
+enum Func7 {CUS_ADD = 0, CUS_DOUBLE_RS1 = 1, CUS_DOUBLE_RS2 = 2, CUS_ADD_MULTICYCLE = 3, CUS_PRNG1 = 5, CUS_PRNG2 = 6, CUS_PRNG3 = 7, CUS_LOAD = 8, CUS_STORE = 9, CUS_XOR_R = 10};
 
 class cvxif_extn_t : public extension_t
 {

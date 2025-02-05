@@ -53,8 +53,8 @@ module crypto_scalar_fu
   endgenerate
 
   ///////////////////////////////////////////// PRNG ///////////////////////////////////////
-  logic [XLEN-1:0]  prng_result_o;
-  logic [127:0]     seed, seed_reg;
+  logic [127:0]  prng_result_o;
+  logic [127:0]  seed, seed_reg;
   prng_t prng_op_i;
   logic prng_en, prng_rst, prng_seed;
   //logic prng_active;
@@ -122,6 +122,64 @@ module crypto_scalar_fu
     end
   endgenerate
   //////////////////////////////////////////////////////////////////////////////////////////
+  
+  
+  //////////////////////////////////////////////////////////////////////////////////////////
+  logic [XLEN-1:0]  store_result_o;
+  logic [127:0]     xor_r_result_o;
+  logic [XLEN-1:0]  input_RF_0, input_RF_1, input_RF_2;
+  logic [XLEN-1:0]  address_RF;
+  logic             write_en, read_en;
+  logic             random;
+  
+  logic [4:0]       xor_temp1, xor_temp2, xor_temp3; 
+
+  generate 
+    if (XLEN==64 && crypto_instr_pkg::MASKED == 1) begin: M_RF
+      always_comb
+      begin
+        if (opcode_i == LOAD) begin
+          input_RF_0  = registers_i[0];
+          input_RF_1  = registers_i[1];
+          input_RF_2  = 0;
+          address_RF  = rd_i;
+          write_en    = 1'b1;
+          read_en     = 0;
+          random      = 0;
+        end else if (opcode_i == STORE) begin
+          address_RF  = registers_i[0];
+          write_en    = 0;
+          read_en     = 1'b1;
+          random      = 0;
+        end else if (opcode_i==XOR_R) begin
+          address_RF  = registers_i[0][4:0];
+          input_RF_0  = {59'b0, registers_i[1][4:0]};
+          input_RF_1  = prng_result_o[63:0];
+          input_RF_2  = prng_result_o[123:64];
+          random      = 1'b1;
+          write_en    = 1'b1;
+        end else begin
+          write_en    = 0;
+          read_en     = 0;
+          random      = 0;
+        end
+      end
+    end
+
+    register_file rf (
+    .clk_i        (clk_i),
+    .rst_ni       (rst_ni),
+    .addr_i       (address_RF[3:0]), // Address for read/write
+    .input0_i     (input_RF_0), // Input data 0
+    .input1_i     (input_RF_1), // Input data 1
+    .input2_i     (input_RF_2), // Input data 2
+    .random_i     (random),
+    .write_en_i   (write_en),// Enable signal for writing
+    .read_en_i    (read_en),   // Enable signal for reading
+    .output_o     (store_result_o)// Output data
+  );
+
+  endgenerate
 
 
 
@@ -398,8 +456,32 @@ module crypto_scalar_fu
             rd_n     = rd_i;
             we_n     = 1'b1;
         end
-         PRNG: begin
-            result_n = prng_result_o;
+        PRNG: begin
+            result_n = 0;
+            hartid_n = hartid_i;
+            id_n     = id_i;
+            valid_n  = 1'b1;
+            rd_n     = rd_i;
+            we_n     = 1'b1;
+        end
+        LOAD: begin
+            result_n = 0;
+            hartid_n = hartid_i;
+            id_n     = id_i;
+            valid_n  = 1'b1;
+            rd_n     = rd_i;
+            we_n     = 1'b1;
+        end
+        STORE: begin
+            result_n = store_result_o;
+            hartid_n = hartid_i;
+            id_n     = id_i;
+            valid_n  = 1'b1;
+            rd_n     = rd_i;
+            we_n     = 1'b1;
+        end
+        XOR_R: begin
+            result_n = 0;
             hartid_n = hartid_i;
             id_n     = id_i;
             valid_n  = 1'b1;
