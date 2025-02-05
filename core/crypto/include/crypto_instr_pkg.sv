@@ -7,26 +7,28 @@
 package crypto_instr_pkg;
   
   localparam XLEN = riscv::XLEN;
-  parameter bit MAES = 1;            // AES Algorithm
-  parameter bit MSHA2 = 1;           // SHA2 Algorithm
-  parameter bit MSM4  = 1;           // SM4 Algorithm
-  parameter bit MSM3  = 1;           // SM3 Algorithm
-  parameter bit METC = 0;            // Other useful instructions for Cryptography ( Bitmanip, Carry-less multiply, Crossbar permutation )
- 
+  parameter bit MAES   = 1;            // AES Algorithm
+  parameter bit MSHA2  = 1;           // SHA2 Algorithm
+  parameter bit MSM4   = 1;           // SM4 Algorithm
+  parameter bit MSM3   = 1;           // SM3 Algorithm
+  parameter bit METC   = 0;            // Other useful instructions for Cryptography ( Bitmanip, Carry-less multiply, Crossbar permutation )
+  parameter bit RANDOM = 1;
+
   typedef enum logic[3:0] {
-    ILLEGAL = 4'b0000,
-    AES32   = 4'b0001,
-    AES64_1 = 4'b0010,
-    AES64_2 = 4'b0011,
-    BREV8   = 4'b0100,
-    CLMUL   = 4'b0101,
-    PACK    = 4'b0110,
-    SHA256  = 4'b0111,
-    SHA512  = 4'b1000,
-    SM3     = 4'b1001,
-    SM4     = 4'b1010,
-    XPERM   = 4'b1011,
-    ZIP     = 4'b1100
+    ILLEGAL   = 4'b0000,
+    AES32     = 4'b0001,
+    AES64_1   = 4'b0010,
+    AES64_2   = 4'b0011,
+    BREV8     = 4'b0100,
+    CLMUL     = 4'b0101,
+    PACK      = 4'b0110,
+    SHA256    = 4'b0111,
+    SHA512    = 4'b1000,
+    SM3       = 4'b1001,
+    SM4       = 4'b1010,
+    XPERM     = 4'b1011,
+    ZIP       = 4'b1100,
+    PRNG      = 4'b1101
   } opcode_t;
 
   typedef enum {  
@@ -38,6 +40,12 @@ package crypto_instr_pkg;
     aes64_im,
     aes64_ks1i
   } aes64_t;
+
+  typedef enum {  
+    prng64_seed, 
+    prng64_enable,
+    prng64_rst 
+  } prng_t;
 
   typedef enum { 
     sha512_SIG0H,   
@@ -64,7 +72,9 @@ package crypto_instr_pkg;
   } copro_issue_resp_t;
 
   // 10 Types Possible instructions 
-  parameter int unsigned NbInstr = 11;
+  //parameter int unsigned NbInstr = 11;
+  parameter int unsigned NbInstr = 14; //+ 3 custom instructions for PRNG (same opcode and funct3, but change funct7)
+
 
   parameter copro_issue_resp_t CoproInstr[NbInstr] = '{
         '{        
@@ -142,6 +152,29 @@ package crypto_instr_pkg;
           mask:  32'b11111_11_11111_00000_1_11_00000_1111111,  
           resp : '{accept : 1'b1, writeback : 1'b1, register_read : {1'b0, 1'b0, 1'b1}},
           opcode : BREV8
+        },
+
+        //------AD: new custom instruction---------------------
+        '{
+            instr:
+            32'b00001_01_00000_00000_0_01_00000_1111011,  // custom3 opcode
+            mask: 32'b11111_11_00000_00000_1_11_00000_1111111,
+            resp : '{accept : 1'b1, writeback : 1'b0, register_read : {1'b0, 1'b1, 1'b1}},
+            opcode : PRNG
+        },
+        '{
+            instr:
+            32'b00001_10_00000_00000_0_01_00000_1111011,  // custom3 opcode
+            mask: 32'b11111_11_00000_00000_1_11_00000_1111111,
+            resp : '{accept : 1'b1, writeback : 1'b0, register_read : {1'b0, 1'b1, 1'b1}},
+            opcode : PRNG
+        },
+        '{
+            instr:
+            32'b00001_11_00000_00000_0_01_00000_1111011,  // custom3 opcode
+            mask: 32'b11111_11_00000_00000_1_11_00000_1111111,
+            resp : '{accept : 1'b1, writeback : 1'b0, register_read : {1'b0, 1'b1, 1'b1}},
+            opcode : PRNG
         }
 
   };

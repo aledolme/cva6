@@ -66,11 +66,11 @@ class cvxif_t : public cvxif_extn_t
             return true;
           case Func7::CUS_ADD_MULTICYCLE:
             return true;
-          case Func7::CUS_XOR:
+          case Func7::CUS_PRNG1:
             return true;
-          case Func7::CUS_OR:
+          case Func7::CUS_PRNG2:
             return true;
-          case Func7::CUS_AND:
+          case Func7::CUS_PRNG3:
             return true;
           default:
             return false;

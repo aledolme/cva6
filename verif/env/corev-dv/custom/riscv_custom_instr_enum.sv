@@ -21,9 +21,9 @@ CUS_EXC,
 CUS_U_ADD,
 CUS_S_ADD,
 
-CUS_AND,
-CUS_OR,
-CUS_XOR,
+CUS_PRNG1,
+CUS_PRNG2,
+CUS_PRNG3,
 
 //Zicond extension
 CZERO_EQZ,

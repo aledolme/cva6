@@ -63,6 +63,8 @@ module crypto_coprocessor
   assign register                      = cvxif_req_i.register;
   assign register_valid                = cvxif_req_i.register_valid;
 
+
+
   instr_decoder #(
       .copro_issue_resp_t (crypto_instr_pkg::copro_issue_resp_t),
       .opcode_t (crypto_instr_pkg::opcode_t),
@@ -117,12 +119,12 @@ module crypto_coprocessor
 
   //////////////////////////////////////////////////////////////////////////////////////
   always_comb begin
-    cvxif_resp_o.result_valid  = alu_valid;  //TODO Should wait for ready from CPU
-    cvxif_resp_o.result.hartid = hartid;
-    cvxif_resp_o.result.id     = id;
-    cvxif_resp_o.result.data   = result;
-    cvxif_resp_o.result.rd     = rd;
-    cvxif_resp_o.result.we     = we;
+      cvxif_resp_o.result_valid  = alu_valid;  //TODO Should wait for ready from CPU
+      cvxif_resp_o.result.hartid = hartid;
+      cvxif_resp_o.result.id     = id;
+      cvxif_resp_o.result.data   = result;
+      cvxif_resp_o.result.rd     = rd;
+      cvxif_resp_o.result.we     = we;
   end
 
 endmodule

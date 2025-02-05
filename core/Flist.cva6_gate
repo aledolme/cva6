@@ -47,6 +47,7 @@ ${CVA6_REPO_DIR}/core/crypto/crypto_sm4.sv
 ${CVA6_REPO_DIR}/core/crypto/crypto_xperm.sv
 ${CVA6_REPO_DIR}/core/crypto/crypto_zip.sv
 ${CVA6_REPO_DIR}/core/crypto/crypto_scalar_fu.sv
+${CVA6_REPO_DIR}/core/crypto/masked/prng.sv
 ${CVA6_REPO_DIR}/core/crypto/crypto_coprocessor.sv
 
 //CVXIF - CVXIF Example Accelerator

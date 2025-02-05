@@ -51,6 +51,80 @@ module crypto_scalar_fu
       );
     end
   endgenerate
+
+  ///////////////////////////////////////////// PRNG ///////////////////////////////////////
+  logic [XLEN-1:0]  prng_result_o;
+  logic [127:0]     seed, seed_reg;
+  prng_t prng_op_i;
+  logic prng_en, prng_rst, prng_seed;
+  //logic prng_active;
+  logic prng_rst_global;
+  generate 
+    if (XLEN==64 && crypto_instr_pkg::RANDOM == 1) begin: M_PRNG
+
+    always_ff @(posedge clk_i or negedge rst_ni) begin
+      if (!rst_ni) begin
+        seed_reg    <= 128'b0;
+        //prng_active <= '0;
+      end else if (prng_seed) begin
+        seed_reg    <= seed;
+        //prng_active <= '0; 
+      end else if (prng_en) begin
+        seed_reg    <= seed_reg;
+        //prng_active <= '1; 
+      end else if (prng_rst) begin
+        seed_reg    <= 128'b0;
+        //prng_active <= '0;      
+      end
+    end
+
+    always_comb
+      begin
+        if (opcode_i==PRNG) begin
+            if (instr_i[27:25]==3'b101) begin
+              prng_op_i = prng64_seed;
+              seed      = {registers_i[0], registers_i[1]};
+              prng_en   = 0;
+              prng_seed = 1'b1;
+              prng_rst  = 0;
+            end
+            else if (instr_i[27:25]==3'b110) begin
+              prng_op_i = prng64_enable;
+              prng_en   = 1'b1;
+              prng_seed = 0;
+              prng_rst  = 0;
+            end
+            else if (instr_i[27:25]==3'b111) begin
+              prng_op_i = prng64_rst;
+              prng_en   = 0;
+              prng_seed = 0;
+              prng_rst  = 1'b1;
+            end
+        end
+        else begin
+          prng_en   = 0;
+          prng_seed = 0;
+          prng_rst  = 0;
+          seed      = 0;
+        end 
+      end
+      
+      assign prng_rst_global = prng_rst || ~rst_ni;
+
+      simple_prng co_simple_prng (
+        .clk(clk_i),                                // Clock input
+        .rst(prng_rst_global),                      // Reset input (active high)
+        .init_i(prng_seed),                         // Set seed
+        .en_i(prng_en),                             // Enable input
+        .seed_i(seed_reg),                          // 128-bit seed
+        .prng_o(prng_result_o)                      // 64-bit pseudo-random output
+      );
+    end
+  endgenerate
+  //////////////////////////////////////////////////////////////////////////////////////////
+
+
+
   ///////////////////////////////////////////// AES64 ///////////////////////////////////////
   logic [XLEN-1:0]  aes64_result_o;
   aes64_t aes64_op_i;
@@ -318,6 +392,14 @@ module crypto_scalar_fu
         end
         ZIP: begin
             result_n = zip_result_o;
+            hartid_n = hartid_i;
+            id_n     = id_i;
+            valid_n  = 1'b1;
+            rd_n     = rd_i;
+            we_n     = 1'b1;
+        end
+         PRNG: begin
+            result_n = prng_result_o;
             hartid_n = hartid_i;
             id_n     = id_i;
             valid_n  = 1'b1;

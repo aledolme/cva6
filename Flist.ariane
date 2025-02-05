@@ -176,6 +176,7 @@ core/crypto/crypto_sm4.sv
 core/crypto/crypto_xperm.sv
 core/crypto/crypto_zip.sv
 core/crypto/crypto_scalar_fu.sv
+core/crypto/masked/prng.sv
 core/crypto/crypto_coprocessor.sv
 vendor/pulp-platform/common_cells/src/counter.sv
 vendor/pulp-platform/common_cells/src/delta_counter.sv
