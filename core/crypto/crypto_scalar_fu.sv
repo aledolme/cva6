@@ -10,6 +10,7 @@ module crypto_scalar_fu
 ) (
     input  logic                  clk_i,
     input  logic                  rst_ni,
+    input  logic                  issue_ready_i,
     input  registers_t            registers_i,
     input  opcode_t               opcode_i,
     input  hartid_t               hartid_i,
@@ -57,26 +58,10 @@ module crypto_scalar_fu
   logic [127:0]  seed, seed_reg;
   prng_t prng_op_i;
   logic prng_en, prng_rst, prng_seed;
-  //logic prng_active;
+  logic prng_active, prng_update;
   logic prng_rst_global;
   generate 
     if (XLEN==64 && crypto_instr_pkg::RANDOM == 1) begin: M_PRNG
-
-    always_ff @(posedge clk_i or negedge rst_ni) begin
-      if (!rst_ni) begin
-        seed_reg    <= 128'b0;
-        //prng_active <= '0;
-      end else if (prng_seed) begin
-        seed_reg    <= seed;
-        //prng_active <= '0; 
-      end else if (prng_en) begin
-        seed_reg    <= seed_reg;
-        //prng_active <= '1; 
-      end else if (prng_rst) begin
-        seed_reg    <= 128'b0;
-        //prng_active <= '0;      
-      end
-    end
 
     always_comb
       begin
@@ -108,13 +93,37 @@ module crypto_scalar_fu
           seed      = 0;
         end 
       end
+
+      always_ff @(posedge clk_i or negedge rst_ni) begin
+        if (!rst_ni) begin
+          seed_reg    <= 128'b0;
+          prng_active <= '0;
+          prng_update <= '0;
+        end else if (prng_seed && issue_ready_i) begin
+          seed_reg    <= seed;
+          prng_active <= 1'b1;
+          prng_update <= '0;  
+        end else if (prng_en) begin
+          seed_reg    <= seed_reg;
+          prng_active <= '0;
+          prng_update <= 1'b1; 
+        end else if (prng_rst) begin
+          seed_reg    <= 128'b0;
+          prng_active <= '0; 
+          prng_update <= '0;
+        end else begin
+          seed_reg    <= seed_reg;
+          prng_active <= '0; 
+          prng_update <= '0;
+        end
+    end
       
       assign prng_rst_global = prng_rst || ~rst_ni;
 
       simple_prng co_simple_prng (
         .clk(clk_i),                                // Clock input
         .rst(prng_rst_global),                      // Reset input (active high)
-        .init_i(prng_seed),                         // Set seed
+        .init_i(prng_active),                       // Set seed
         .en_i(prng_en),                             // Enable input
         .seed_i(seed_reg),                          // 128-bit seed
         .prng_o(prng_result_o)                      // 64-bit pseudo-random output
@@ -131,6 +140,7 @@ module crypto_scalar_fu
   logic [XLEN-1:0]  address_RF;
   logic             write_en, read_en;
   logic             random;
+  logic             add_round_key;
   
   logic [4:0]       xor_temp1, xor_temp2, xor_temp3; 
 
@@ -139,44 +149,57 @@ module crypto_scalar_fu
       always_comb
       begin
         if (opcode_i == LOAD) begin
-          input_RF_0  = registers_i[0];
-          input_RF_1  = registers_i[1];
-          input_RF_2  = 0;
-          address_RF  = rd_i;
-          write_en    = 1'b1;
-          read_en     = 0;
-          random      = 0;
+          input_RF_0    = registers_i[0];
+          input_RF_1    = registers_i[1];
+          input_RF_2    = 0;
+          address_RF    = rd_i;
+          write_en      = 1'b1;
+          read_en       = 0;
+          random        = 0;
+          add_round_key = 0;
         end else if (opcode_i == STORE) begin
-          address_RF  = registers_i[0];
-          write_en    = 0;
-          read_en     = 1'b1;
-          random      = 0;
+          address_RF    = registers_i[0];
+          write_en      = 0;
+          read_en       = 1'b1;
+          random        = 0;
+          add_round_key = 0;
         end else if (opcode_i==XOR_R) begin
-          address_RF  = registers_i[0][4:0];
-          input_RF_0  = {59'b0, registers_i[1][4:0]};
-          input_RF_1  = prng_result_o[63:0];
-          input_RF_2  = prng_result_o[123:64];
-          random      = 1'b1;
-          write_en    = 1'b1;
+          address_RF    = registers_i[0][4:0];
+          input_RF_0    = {59'b0, registers_i[1][4:0]};
+          input_RF_1    = prng_result_o[63:0];
+          input_RF_2    = prng_result_o[123:64];
+          random        = 1'b1;
+          write_en      = 1'b1;
+          add_round_key = 0;
+        end else if (opcode_i==ADD_RK) begin
+          address_RF    = rd_i;
+          input_RF_0    = registers_i[0];  //pt
+          input_RF_1    = registers_i[1];  //key
+          input_RF_2    = '0;
+          random        = 1'b0;
+          write_en      = 1'b1;
+          add_round_key = 1'b1;
         end else begin
-          write_en    = 0;
-          read_en     = 0;
-          random      = 0;
+          write_en      = 0;
+          read_en       = 0;
+          random        = 0;
+          add_round_key = 0;
         end
       end
     end
 
     register_file rf (
-    .clk_i        (clk_i),
-    .rst_ni       (rst_ni),
-    .addr_i       (address_RF[3:0]), // Address for read/write
-    .input0_i     (input_RF_0), // Input data 0
-    .input1_i     (input_RF_1), // Input data 1
-    .input2_i     (input_RF_2), // Input data 2
-    .random_i     (random),
-    .write_en_i   (write_en),// Enable signal for writing
-    .read_en_i    (read_en),   // Enable signal for reading
-    .output_o     (store_result_o)// Output data
+    .clk_i           (clk_i),
+    .rst_ni          (rst_ni),
+    .addr_i          (address_RF[3:0]), // Address for read/write
+    .input0_i        (input_RF_0), // Input data 0
+    .input1_i        (input_RF_1), // Input data 1
+    .input2_i        (input_RF_2), // Input data 2
+    .random_i        (random),
+    .add_round_key_i (add_round_key),
+    .write_en_i      (write_en),// Enable signal for writing
+    .read_en_i       (read_en),   // Enable signal for reading
+    .output_o        (store_result_o)// Output data
   );
 
   endgenerate
@@ -481,6 +504,14 @@ module crypto_scalar_fu
             we_n     = 1'b1;
         end
         XOR_R: begin
+            result_n = 0;
+            hartid_n = hartid_i;
+            id_n     = id_i;
+            valid_n  = 1'b1;
+            rd_n     = rd_i;
+            we_n     = 1'b1;
+        end
+        ADD_RK: begin
             result_n = 0;
             hartid_n = hartid_i;
             id_n     = id_i;

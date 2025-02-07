@@ -78,6 +78,8 @@ class cvxif_t : public cvxif_extn_t
             return true;
           case Func7::CUS_XOR_R:
             return true;
+          case Func7::CUS_ADD_RK:
+            return true;
           default:
             return false;
         }

@@ -22,10 +22,11 @@ int main(int argc, char* arg[])
     
     uint32_t volatile * trigger = (uint32_t*)TRIGGER_CTRL;
 
-    uint32_t rs1_fixed = 0xDEADBEEF;
-    uint32_t rs2_fixed = 0xDEADBEEF;
-
-
+    //uint32_t rs1_fixed = 0xDEADBEEF;
+    //uint32_t rs2_fixed = 0xDEADBEEF;
+    uint32_t rs1_fixed = 0x00000000;
+    uint32_t rs2_fixed = 0x00000000;
+    
     *trigger = 1 << TRIGGER_CTRL_START;
  
     cv_xif_prng_init(&rs1_fixed, &rs2_fixed);

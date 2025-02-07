@@ -101,20 +101,21 @@ module crypto_coprocessor
       .id_t(id_t),
       .registers_t(registers_t)
   ) i_copro_alu (
-      .clk_i      (clk_i),
-      .rst_ni     (rst_ni),
-      .registers_i(registers),
-      .opcode_i   (opcode),
-      .hartid_i   (issue_hartid),
-      .id_i       (issue_id),
-      .rd_i       (issue_rd),
-      .instr_i    (issue_req.instr),
-      .hartid_o   (hartid),
-      .id_o       (id),
-      .result_o   (result),
-      .valid_o    (alu_valid),
-      .rd_o       (rd),
-      .we_o       (we)
+      .clk_i          (clk_i),
+      .rst_ni         (rst_ni),
+      .issue_ready_i  (issue_ready),
+      .registers_i    (registers),
+      .opcode_i       (opcode),
+      .hartid_i       (issue_hartid),
+      .id_i           (issue_id),
+      .rd_i           (issue_rd),
+      .instr_i        (issue_req.instr),
+      .hartid_o       (hartid),
+      .id_o           (id),
+      .result_o       (result),
+      .valid_o        (alu_valid),
+      .rd_o           (rd),
+      .we_o           (we)
   );
 
   //////////////////////////////////////////////////////////////////////////////////////

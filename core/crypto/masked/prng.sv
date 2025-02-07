@@ -15,8 +15,8 @@ module simple_prng (
 
     logic [127:0] lfsr;
 
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
+    always_comb begin
+      if (rst) begin
             lfsr <= 0;  
         end else if (init_i) begin
             lfsr <= seed_i;
@@ -24,6 +24,16 @@ module simple_prng (
             lfsr <= {lfsr[126:0], lfsr[127] ^ lfsr[63] ^ lfsr[31] ^ lfsr[0]};
         end
     end
+
+    //always_ff @(posedge clk or posedge rst) begin
+    //    if (rst) begin
+    //        lfsr <= 0;  
+    //    end else if (init_i) begin
+    //        lfsr <= seed_i;
+    //    end else if (en_i) begin
+    //        lfsr <= {lfsr[126:0], lfsr[127] ^ lfsr[63] ^ lfsr[31] ^ lfsr[0]};
+    //    end
+    //end
 
     assign prng_o = lfsr;
 

@@ -52,6 +52,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
          CUS_LOAD:      asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());
          CUS_STORE:     asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());
          CUS_XOR_R:     asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());
+         CUS_ADD_RK:    asm_str = $sformatf("%0s %0s, %0s, %0s",      asm_str, rd.name(),  rs1.name(),  rs2.name());  
       endcase
       comment = {get_instr_name(), " ", comment};
       if (comment != "") begin
@@ -66,7 +67,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
 
    function bit [6:0] get_opcode();
       case (instr_name) inside
-         {CUS_ADD, CUS_ADD_MULTI, CUS_ADD_RS3, CUS_NOP, CUS_U_ADD, CUS_S_ADD, CUS_EXC, CUS_PRNG1, CUS_PRNG2, CUS_PRNG3, CUS_LOAD, CUS_STORE, CUS_XOR_R}   : get_opcode = 7'b1111011;
+         {CUS_ADD, CUS_ADD_MULTI, CUS_ADD_RS3, CUS_NOP, CUS_U_ADD, CUS_S_ADD, CUS_EXC, CUS_PRNG1, CUS_PRNG2, CUS_PRNG3, CUS_LOAD, CUS_STORE, CUS_XOR_R, CUS_ADD_RK}   : get_opcode = 7'b1111011;
          default : `uvm_fatal(`gfn, $sformatf("Unsupported instruction %0s", instr_name.name()))
       endcase
    endfunction
@@ -93,6 +94,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
          CUS_LOAD                   : get_func7 = 7'b0001000;
          CUS_STORE                  : get_func7 = 7'b0001001;
          CUS_XOR_R                  : get_func7 = 7'b0001010;
+         CUS_ADD_RK                 : get_func7 = 7'b0001011;
       endcase
    endfunction
 
@@ -132,7 +134,7 @@ class cvxif_custom_instr extends riscv_custom_instr;
       return cfg_cva6.enable_x_extension && (
              instr_name inside {
                 CUS_ADD, CUS_ADD_MULTI, CUS_NOP, CUS_ADD_RS3,
-                CUS_EXC, CUS_U_ADD, CUS_S_ADD, CUS_PRNG1, CUS_PRNG2, CUS_PRNG3, CUS_LOAD, CUS_STORE, CUS_XOR_R
+                CUS_EXC, CUS_U_ADD, CUS_S_ADD, CUS_PRNG1, CUS_PRNG2, CUS_PRNG3, CUS_LOAD, CUS_STORE, CUS_XOR_R, CUS_ADD_RK
                                });
    endfunction
 

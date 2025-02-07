@@ -47,12 +47,15 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "li x16, 6\n"
         "li x17, 8\n"
 
-        ".insn r 0x7B, 1, 8, x0, x10, x11\n" //Load the state into reg0-reg1
-        ".insn r 0x7B, 1, 8, x6, x12, x13\n" //Load the state into reg0-reg1
-        ".insn r 0x7B, 1, 6, x0, x0, x0\n"
+        ".insn r 0x7B, 1, 8, x0, x10, x11\n" // Load the state into reg0-reg1
+        ".insn r 0x7B, 1, 8, x6, x12, x13\n" // Load the state into reg6-reg7
+        
+        ".insn r 0x7B, 1, 6, x0, x0, x0\n"   // Prng-enable
+        ".insn r 0x7B, 1, 10, x0, x14, x0\n"
+        ".insn r 0x7B, 1, 6, x0, x0, x0\n"   // Prng-enable
+        ".insn r 0x7B, 1, 10, x0, x16, x16\n"
 
-        ".insn r 0x7B, 1, 10, x14, x14, x0\n"
-        ".insn r 0x7B, 1, 10, x16, x16, x16\n"
+        ".insn r 0x7B, 1, 11, x0, x14, x16\n"
 
         //".insn r 0x7B, 1, 9, %[t5], x0, x0\n" 
 

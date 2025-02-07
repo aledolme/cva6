@@ -28,6 +28,7 @@ CUS_PRNG3,
 CUS_LOAD,
 CUS_STORE,
 CUS_XOR_R,
+CUS_ADD_RK,
 
 //Zicond extension
 CZERO_EQZ,

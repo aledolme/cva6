@@ -15,12 +15,13 @@
 #define CUS_NOP() .word 0b##0000000##00000####00000##000##00000##1111011
 #define CUS_ADD(rs1,rs2,rd) .word 0b##0000000##rs2####rs1##001##rd##1111011
 //----------------------------------------------------
-#define CUS_PRNG1(rs1,rs2,rd) .word 0b##0000101##rs2####rs1##001##rd##1111011
-#define CUS_PRNG2(rs1,rs2,rd) .word 0b##00000110##rs2####rs1##001##rd##1111011
-#define CUS_PRNG3(rs1,rs2,rd) .word 0b##0000111##rs2####rs1##001##rd##1111011
-#define CUS_LOAD(rs1,rs2,rd)  .word 0b##0001000##rs2####rs1##001##rd##1111011
-#define CUS_STORE(rs1,rs2,rd) .word 0b##0001001##rs2####rs1##001##rd##1111011
-#define CUS_XOR_R(rs1,rs2,rd) .word 0b##0001010##rs2####rs1##001##rd##1111011
+#define CUS_PRNG1(rs1,rs2,rd)  .word 0b##0000101##rs2####rs1##001##rd##1111011
+#define CUS_PRNG2(rs1,rs2,rd)  .word 0b##00000110##rs2####rs1##001##rd##1111011
+#define CUS_PRNG3(rs1,rs2,rd)  .word 0b##0000111##rs2####rs1##001##rd##1111011
+#define CUS_LOAD(rs1,rs2,rd)   .word 0b##0001000##rs2####rs1##001##rd##1111011
+#define CUS_STORE(rs1,rs2,rd)  .word 0b##0001001##rs2####rs1##001##rd##1111011
+#define CUS_XOR_R(rs1,rs2,rd)  .word 0b##0001010##rs2####rs1##001##rd##1111011
+#define CUS_ADD_RK(rs1,rs2,rd) .word 0b##0001011##rs2####rs1##001##rd##1111011
 //-----------------------------------------------------
 #define CUS_ADD_RS1(rs1,rs2,rd) .word 0b##0000001##rs2####rs1##001##rd##1111011 // only use rs1 : rs1 + rs1 => rd
 #define CUS_ADD_RS2(rs1,rs2,rd) .word 0b##0000010##rs2####rs1##001##rd##1111011 // only use rs2 : rs2 + rs2 => rd
