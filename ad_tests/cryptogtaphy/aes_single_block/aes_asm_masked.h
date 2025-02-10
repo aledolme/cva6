@@ -70,8 +70,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x11, x15\n"
 
         "aes64ks1i x7, x15, 0\n"
-        "aes64ks2  x0, x16, x15\n"
-        "aes64ks2  x0, x13, x16\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
 
 
         : [a2] "+r" (a2), [a3] "+r" (a3), [a4] "+r" (a4), [a5] "+r" (a5), [a6] "+r" (a6), [t0] "+r" (t0)

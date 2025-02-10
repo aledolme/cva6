@@ -279,6 +279,8 @@ module crypto_scalar_fu
           aes64_en = 1;
           if(instr_i[30]==1) begin
             aes64_op_i = aes64_ks2;
+            aes64_rs1  = aes_comb_out0;
+            aes64_rs2  = aes_comb_out1;
           end
           else begin
             if (instr_i[27:26]==2'b00) begin

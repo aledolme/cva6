@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Mon Feb 10 14:44:05 2025
+[*] Mon Feb 10 15:27:45 2025
 [*]
 [dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-02-10/veri-testharness_sim/aes_asm_single_encryption_masked.cv64a6_imafdc_sv39.vcd"
-[dumpfile_mtime] "Mon Feb 10 14:43:32 2025"
-[dumpfile_size] 92554489
+[dumpfile_mtime] "Mon Feb 10 15:27:24 2025"
+[dumpfile_size] 88999475
 [savefile] "/home/a.dolmeta/cva6/ad_tests/wave_crypto.gtkw"
-[timestart] 8934
+[timestart] 8546
 [size] 2560 1369
 [pos] -2569 -304
-*-3.000000 8967 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-3.000000 8577 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] ariane_testharness.
 [treeopen] ariane_testharness.i_ariane.
 [treeopen] ariane_testharness.i_ariane.cvxif_example_coprocessor.
