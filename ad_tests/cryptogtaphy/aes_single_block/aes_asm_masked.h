@@ -55,16 +55,36 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         ".insn r 0x7B, 1, 6, x0, x0, x0\n"   // Prng-enable
         ".insn r 0x7B, 1, 10, x0, x16, x16\n"
 
-        ".insn r 0x7B, 1, 11, x0, x14, x16\n"
+        "li x10, 1\n"
+        "li x11, 3\n"
+        "li x12, 5\n"
+        "li x13, 7\n"  
+        "li x18, 9\n" 
 
-        //".insn r 0x7B, 1, 9, %[t5], x0, x0\n" 
+        ".insn r 0x7B, 1, 11, x0, x14, x16\n" // Add-Round-0
+
+        "aes64esm x0, x0, x14\n"
+        "aes64esm x0, x10, x14\n"
+
+        "aes64esm x0, x14, x15\n"
+        "aes64esm x0, x11, x15\n"
+
+        "aes64ks1i x7, x15, 0\n"
+        "aes64ks2  x0, x16, x15\n"
+        "aes64ks2  x0, x13, x16\n"
+
 
         : [a2] "+r" (a2), [a3] "+r" (a3), [a4] "+r" (a4), [a5] "+r" (a5), [a6] "+r" (a6), [t0] "+r" (t0)
         : [key] "r" (Key), [state] "r" (state)
         : "memory"
     );
+    
+    //".insn r 0x7B, 1, 9, %[t5], x0, x0\n" 
 
 }
+
+
+
 
 // This function produces Nb(Nr+1) round keys. The round keys are used in each round to decrypt the states. 
 void KeyExpansion_ENC(uint32_t* RoundKey,   uint8_t* Key)

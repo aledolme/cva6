@@ -141,6 +141,10 @@ module crypto_scalar_fu
   logic             write_en, read_en;
   logic             random;
   logic             add_round_key;
+  logic             aes_round;
+  logic             aes_key_exp;
+
+  logic [63:0]      aes_comb_out0, aes_comb_out1;
   
   logic [4:0]       xor_temp1, xor_temp2, xor_temp3; 
 
@@ -157,12 +161,16 @@ module crypto_scalar_fu
           read_en       = 0;
           random        = 0;
           add_round_key = 0;
+          aes_key_exp   = 0;
+          aes_round     = 0;
         end else if (opcode_i == STORE) begin
           address_RF    = registers_i[0];
           write_en      = 0;
           read_en       = 1'b1;
           random        = 0;
           add_round_key = 0;
+          aes_key_exp   = 0;
+          aes_round     = 0;
         end else if (opcode_i==XOR_R) begin
           address_RF    = registers_i[0][4:0];
           input_RF_0    = {59'b0, registers_i[1][4:0]};
@@ -171,24 +179,70 @@ module crypto_scalar_fu
           random        = 1'b1;
           write_en      = 1'b1;
           add_round_key = 0;
+          aes_key_exp   = 0;
+          aes_round     = 0;
         end else if (opcode_i==ADD_RK) begin
-          address_RF    = rd_i;
+          address_RF    = '0;
           input_RF_0    = registers_i[0];  //pt
           input_RF_1    = registers_i[1];  //key
           input_RF_2    = '0;
           random        = 1'b0;
           write_en      = 1'b1;
           add_round_key = 1'b1;
+          aes_key_exp   = 0;
+          aes_round     = 0;
+        end else if (opcode_i==AES64_1) begin
+
+          if(instr_i[30]==1) begin //aes64ks2
+            address_RF    = '0;
+            input_RF_0    = registers_i[0]; 
+            input_RF_1    = registers_i[1];  
+            input_RF_2    = aes64_result_o;
+            random        = 1'b0;
+            write_en      = 1'b1;
+            add_round_key = 1'b0;
+            aes_round     = 1'b0;
+            aes_key_exp   = 1'b1;
+            read_en       = 1'b1;           
+          end
+          else begin
+            if (instr_i[27:26]==2'b01) begin  //aes64esm
+              address_RF    = '0;
+              input_RF_0    = registers_i[0];  
+              input_RF_1    = registers_i[1];  
+              input_RF_2    = aes64_result_o;
+              random        = 1'b0;
+              write_en      = 1'b1;
+              add_round_key = 1'b0;
+              aes_round     = 1'b1;
+              aes_key_exp   = 0;
+              read_en       = 1'b1;
+            end
+          end
+
+        end else if (opcode_i==AES64_2) begin
+          address_RF    = '0;
+          input_RF_0    = {59'b0, rd_i};  
+          input_RF_1    = registers_i[0];  
+          input_RF_2    = aes64_result_o;
+          random        = 1'b0;
+          write_en      = 1'b1;
+          add_round_key = 1'b0;
+          aes_round     = 1'b0;
+          aes_key_exp   = 1'b1;
+          read_en       = 1'b1;
         end else begin
           write_en      = 0;
           read_en       = 0;
           random        = 0;
           add_round_key = 0;
+          aes_round     = 0;
+          aes_key_exp   = 0;
         end
       end
     end
 
-    register_file rf (
+    rf rf_i (
     .clk_i           (clk_i),
     .rst_ni          (rst_ni),
     .addr_i          (address_RF[3:0]), // Address for read/write
@@ -197,8 +251,12 @@ module crypto_scalar_fu
     .input2_i        (input_RF_2), // Input data 2
     .random_i        (random),
     .add_round_key_i (add_round_key),
+    .aes_round_i     (aes_round),
+    .aes_key_exp_i   (aes_key_exp),
     .write_en_i      (write_en),// Enable signal for writing
     .read_en_i       (read_en),   // Enable signal for reading
+    .aes_comb_out0_o (aes_comb_out0),
+    .aes_comb_out1_o (aes_comb_out1),
     .output_o        (store_result_o)// Output data
   );
 
@@ -210,6 +268,9 @@ module crypto_scalar_fu
   logic [XLEN-1:0]  aes64_result_o;
   aes64_t aes64_op_i;
   logic aes64_en;
+
+  logic [63:0] aes64_rs1, aes64_rs2;
+
   generate 
     if (XLEN==64 && crypto_instr_pkg::MAES == 1) begin: M_AES64
       always_comb
@@ -222,15 +283,23 @@ module crypto_scalar_fu
           else begin
             if (instr_i[27:26]==2'b00) begin
               aes64_op_i = aes64_es;
+              aes64_rs1  = registers_i[0];
+              aes64_rs2  = registers_i[1];
             end
             else if (instr_i[27:26]==2'b01) begin
               aes64_op_i = aes64_esm;
+              aes64_rs1  = aes_comb_out0;
+              aes64_rs2  = aes_comb_out1;
             end
             else if (instr_i[27:26]==2'b10) begin
               aes64_op_i = aes64_ds;
+              aes64_rs1  = registers_i[0];
+              aes64_rs2  = registers_i[1];
             end
             else if (instr_i[27:26]==2'b11) begin
               aes64_op_i = aes64_dsm;
+              aes64_rs1  = registers_i[0];
+              aes64_rs2  = registers_i[1];
             end
           end
         end
@@ -238,20 +307,26 @@ module crypto_scalar_fu
           aes64_en = 1;
           if(instr_i[24]==1) begin
             aes64_op_i = aes64_ks1i;
+            aes64_rs1  = aes_comb_out0;
+            aes64_rs2  = registers_i[1];
           end
           else if(instr_i[24]==0) begin
             aes64_op_i = aes64_im;
+            aes64_rs1  = registers_i[0];
+            aes64_rs2  = registers_i[1];
           end
         end
         else begin
-          aes64_en = 0;
+          aes64_en   = 0;
+          aes64_rs1  = 0;
+          aes64_rs2  = 0;
         end 
       end
       crypto_aes64 co_crypto_aes64(
       .aes64_en_i(aes64_en),
       .aes64_op_i(aes64_op_i),
-      .aes64_rs1_i(registers_i[0]),
-      .aes64_rs2_i(registers_i[1]),
+      .aes64_rs1_i(aes64_rs1),
+      .aes64_rs2_i(aes64_rs2),
       .aes64_rnum_i(instr_i[23:20]),
       .aes64_result_o(aes64_result_o)
       );

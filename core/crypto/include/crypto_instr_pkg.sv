@@ -138,14 +138,14 @@ package crypto_instr_pkg;
         '{
           instr: 32'b00110_01_00000_00000_0_00_00000_0110011,  // AES64 opcode - 5 Instructions
           mask:  32'b10110_01_00000_00000_1_11_00000_1111111,  
-          resp : '{accept : 1'b1, writeback : 1'b1, register_read : {1'b0, 1'b1, 1'b1}},
+          resp : '{accept : 1'b1, writeback : 1'b0, register_read : {1'b0, 1'b1, 1'b1}},
           opcode : AES64_1
         },
 
         '{
           instr: 32'b00110_00_00000_00000_0_01_00000_0010011,  // AES64 opcode - 2 Instructions im-ks1i
           mask:  32'b11111_11_00000_00000_1_11_00000_1111111,  
-          resp : '{accept : 1'b1, writeback : 1'b1, register_read : {1'b0, 1'b0, 1'b1}},
+          resp : '{accept : 1'b1, writeback : 1'b0, register_read : {1'b0, 1'b0, 1'b1}},
           opcode : AES64_2
         },
 
