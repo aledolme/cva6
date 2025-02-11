@@ -206,7 +206,7 @@ module crypto_scalar_fu
             read_en       = 1'b1;           
           end
           else begin
-            if (instr_i[27:26]==2'b01) begin  //aes64esm
+            if (instr_i[27:26]==2'b01 || instr_i[27:26]==2'b00) begin  //aes64esm or aes64es
               address_RF    = '0;
               input_RF_0    = registers_i[0];  
               input_RF_1    = registers_i[1];  
@@ -285,8 +285,8 @@ module crypto_scalar_fu
           else begin
             if (instr_i[27:26]==2'b00) begin
               aes64_op_i = aes64_es;
-              aes64_rs1  = registers_i[0];
-              aes64_rs2  = registers_i[1];
+              aes64_rs1  = aes_comb_out0;
+              aes64_rs2  = aes_comb_out1;
             end
             else if (instr_i[27:26]==2'b01) begin
               aes64_op_i = aes64_esm;

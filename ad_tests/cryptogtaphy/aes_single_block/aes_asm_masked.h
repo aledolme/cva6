@@ -121,7 +121,7 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 3\n"
+        "aes64ks1i x9, x15, 2\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
@@ -138,11 +138,11 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x11, x20\n"
 
         //Key Expansion 4 -----------------------
-        "aes64ks1i x7, x15, 4\n"
+        "aes64ks1i x7, x15, 3\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 4\n"
+        "aes64ks1i x9, x15, 3\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
@@ -159,11 +159,11 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x22, x14\n"
 
         //Key Expansion 5 -----------------------
-        "aes64ks1i x7, x15, 5\n"
+        "aes64ks1i x7, x15, 4\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 5\n"
+        "aes64ks1i x9, x15, 4\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
@@ -180,11 +180,11 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x11, x20\n"
 
         //Key Expansion 6 -----------------------
-        "aes64ks1i x7, x15, 6\n"
+        "aes64ks1i x7, x15, 5\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 6\n"
+        "aes64ks1i x9, x15, 5\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
@@ -201,11 +201,11 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x22, x14\n"
 
         //Key Expansion 7 -----------------------
-        "aes64ks1i x7, x15, 7\n"
+        "aes64ks1i x7, x15, 6\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 7\n"
+        "aes64ks1i x9, x15, 6\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
@@ -222,11 +222,11 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x11, x20\n"
 
         //Key Expansion 8 -----------------------
-        "aes64ks1i x7, x15, 8\n"
+        "aes64ks1i x7, x15, 7\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 8\n"
+        "aes64ks1i x9, x15, 7\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
@@ -243,16 +243,37 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x22, x14\n"
 
         //Key Expansion 9 -----------------------
-        "aes64ks1i x7, x15, 9\n"
+        "aes64ks1i x7, x15, 8\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 9\n"
+        "aes64ks1i x9, x15, 8\n"
         "aes64ks2  x0, x15, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
         // Add-Key RK9
         ".insn r 0x7B, 1, 11, x0, x19, x16\n" 
+
+        //---- ROUND 10 ---------------------------------------------------------------
+        //aes64-es 1st share
+        "aes64es x0, x0, x19\n"
+        "aes64es x0, x10, x19\n"
+
+        //aes64-es 2nd share
+        "aes64esm x0, x14, x20\n"
+        "aes64esm x0, x11, x20\n"
+
+        //Key Expansion 10 -----------------------
+        "aes64ks1i x7, x15, 9\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 7\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK10
+        ".insn r 0x7B, 1, 11, x0, x0, x16\n"  
 
 
         : [a2] "+r" (a2), [a3] "+r" (a3), [a4] "+r" (a4), [a5] "+r" (a5), [a6] "+r" (a6), [t0] "+r" (t0)
