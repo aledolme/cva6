@@ -48,10 +48,10 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "li x17, 8\n"
 
         ".insn r 0x7B, 1, 8, x0, x10, x11\n" // Load the state into reg0-reg1
-        ".insn r 0x7B, 1, 8, x6, x12, x13\n" // Load the state into reg6-reg7
+        ".insn r 0x7B, 1, 8, x6, x12, x13\n" // Load the key   into reg6-reg7
         
         ".insn r 0x7B, 1, 6, x0, x0, x0\n"   // Prng-enable
-        ".insn r 0x7B, 1, 10, x0, x14, x0\n"
+        ".insn r 0x7B, 1, 10, x0, x0, x0\n"
         ".insn r 0x7B, 1, 6, x0, x0, x0\n"   // Prng-enable
         ".insn r 0x7B, 1, 10, x0, x16, x16\n"
 
@@ -60,18 +60,202 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "li x12, 5\n"
         "li x13, 7\n"  
         "li x18, 9\n" 
+        "li x19, 10\n"
+        "li x20, 11\n"
+        "li x21, 12\n"  
+        "li x22, 13\n"
 
-        ".insn r 0x7B, 1, 11, x0, x14, x16\n" // Add-Round-0
+        //---- Initial Round Key [key] ------------------------------------------------
+        ".insn r 0x7B, 1, 11, x0, x0, x16\n"
 
-        "aes64esm x0, x0, x14\n"
-        "aes64esm x0, x10, x14\n"
+        //---- ROUND 1 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x19, x0\n"
+        "aes64esm x0, x20, x0\n"
 
-        "aes64esm x0, x14, x15\n"
-        "aes64esm x0, x11, x15\n"
+        //aes64-esm 2nd share
+        "aes64esm x0, x21, x14\n"
+        "aes64esm x0, x22, x14\n"
 
+        //Key Expansion 1 -----------------------
         "aes64ks1i x7, x15, 0\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 0\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK1
+        ".insn r 0x7B, 1, 11, x0, x19, x16\n"
+
+        //---- ROUND 2 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x0, x19\n"
+        "aes64esm x0, x10, x19\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x14, x20\n"
+        "aes64esm x0, x11, x20\n"
+
+        //Key Expansion 2 -----------------------
+        "aes64ks1i x7, x15, 1\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 1\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK2
+        ".insn r 0x7B, 1, 11, x0, x0, x16\n"
+
+        //---- ROUND 3 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x19, x0\n"
+        "aes64esm x0, x20, x0\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x21, x14\n"
+        "aes64esm x0, x22, x14\n"
+
+        //Key Expansion 3 -----------------------
+        "aes64ks1i x7, x15, 2\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 3\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK3
+        ".insn r 0x7B, 1, 11, x0, x19, x16\n"       
+
+        //---- ROUND 4 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x0, x19\n"
+        "aes64esm x0, x10, x19\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x14, x20\n"
+        "aes64esm x0, x11, x20\n"
+
+        //Key Expansion 4 -----------------------
+        "aes64ks1i x7, x15, 4\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 4\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK4
+        ".insn r 0x7B, 1, 11, x0, x0, x16\n"
+
+        //---- ROUND 5 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x19, x0\n"
+        "aes64esm x0, x20, x0\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x21, x14\n"
+        "aes64esm x0, x22, x14\n"
+
+        //Key Expansion 5 -----------------------
+        "aes64ks1i x7, x15, 4\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 4\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK5
+        ".insn r 0x7B, 1, 11, x0, x19, x16\n"  
+
+        //---- ROUND 6 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x0, x19\n"
+        "aes64esm x0, x10, x19\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x14, x20\n"
+        "aes64esm x0, x11, x20\n"
+
+        //Key Expansion 6 -----------------------
+        "aes64ks1i x7, x15, 5\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 5\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK6
+        ".insn r 0x7B, 1, 11, x0, x0, x16\n"     
+        
+        //---- ROUND 7 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x19, x0\n"
+        "aes64esm x0, x20, x0\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x21, x14\n"
+        "aes64esm x0, x22, x14\n"
+
+        //Key Expansion 7 -----------------------
+        "aes64ks1i x7, x15, 6\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 6\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK7
+        ".insn r 0x7B, 1, 11, x0, x19, x16\n"  
+
+        //---- ROUND 8 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x0, x19\n"
+        "aes64esm x0, x10, x19\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x14, x20\n"
+        "aes64esm x0, x11, x20\n"
+
+        //Key Expansion 8 -----------------------
+        "aes64ks1i x7, x15, 7\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 7\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK8
+        ".insn r 0x7B, 1, 11, x0, x0, x16\n"  
+
+        //---- ROUND 9 ---------------------------------------------------------------
+        //aes64-esm 1st share
+        "aes64esm x0, x19, x0\n"
+        "aes64esm x0, x20, x0\n"
+
+        //aes64-esm 2nd share
+        "aes64esm x0, x21, x14\n"
+        "aes64esm x0, x22, x14\n"
+
+        //Key Expansion 9 -----------------------
+        "aes64ks1i x7, x15, 8\n"
+        "aes64ks2  x0, x15, x16\n"
+        "aes64ks2  x0, x16, x13\n"
+
+        "aes64ks1i x9, x15, 8\n"
+        "aes64ks2  x0, x15, x17\n"
+        "aes64ks2  x0, x17, x18\n"
+
+        // Add-Key RK9
+        ".insn r 0x7B, 1, 11, x0, x19, x16\n" 
 
 
         : [a2] "+r" (a2), [a3] "+r" (a3), [a4] "+r" (a4), [a5] "+r" (a5), [a6] "+r" (a6), [t0] "+r" (t0)
