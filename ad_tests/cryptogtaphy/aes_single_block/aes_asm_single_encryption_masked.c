@@ -1,13 +1,24 @@
+/****************************************************************************************
+# Simple custom test:       aes_asm_single_encryption_masked.c
+# Author:                   Alessandra Dolmeta
+# Description: 
+/****************************************************************************************/
+
+
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "aes_asm_masked.h"
 #include "trigger_auto.h"
+#include "uart.h"
 
 void cv_xif_prng_init(uint32_t* a, uint32_t* b)
 {
     asm volatile (
         "lw a1, %[input_a]\n"               //a0: x10
         "lw a0, %[input_b]\n"               //a1: x11
-        ".insn r 0x7B, 1, 5, x0, a0, a1\n"  //CUS_XOR(a0,a1,a2)
+        ".insn r 0x7B, 1, 5, x0, a0, a1\n"  
         :     
         : [input_a] "m" (*a), [input_b] "m" (*b) // Input operands
         : 

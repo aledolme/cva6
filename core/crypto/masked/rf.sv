@@ -68,7 +68,7 @@ module rf (
         if (!rst_ni) begin
             register_array <= '{default: '0}; // Reset all registers to 0
         end else if (write_en_i && ~random_i &&  ~add_round_key_i && ~aes_round_i && ~aes_key_exp_i) begin
-            register_array[addr_i] <= input0_i; 
+            register_array[addr_i]     <= input0_i; 
             register_array[addr_i + 1] <= input1_i;
 
         end else if (write_en_i && random_i) begin

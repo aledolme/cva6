@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Tue Feb 11 11:24:33 2025
+[*] Mon Feb 17 10:10:17 2025
 [*]
-[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-02-11/veri-testharness_sim/aes_asm_single_encryption_masked.cv64a6_imafdc_sv39.vcd"
-[dumpfile_mtime] "Tue Feb 11 11:19:31 2025"
-[dumpfile_size] 83371416
+[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-02-17/veri-testharness_sim/aes_asm_single_encryption_masked.cv64a6_imafdc_sv39.vcd"
+[dumpfile_mtime] "Mon Feb 17 10:00:07 2025"
+[dumpfile_size] 106707079
 [savefile] "/home/a.dolmeta/cva6/ad_tests/wave_crypto.gtkw"
-[timestart] 8005
+[timestart] 10319
 [size] 1920 1009
-[pos] 3832 -8
-*-3.000000 8027 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 1920 -8
+*-5.000000 10427 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] ariane_testharness.
 [treeopen] ariane_testharness.i_ariane.
 [treeopen] ariane_testharness.i_ariane.cvxif_example_coprocessor.
@@ -19,7 +19,7 @@
 [sst_width] 355
 [signals_width] 466
 [sst_expanded] 1
-[sst_vpaned_height] 397
+[sst_vpaned_height] 396
 @28
 ariane_testharness.i_trigger.trigger_o
 @200
