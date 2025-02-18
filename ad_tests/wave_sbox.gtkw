@@ -1,0 +1,60 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Tue Feb 18 14:09:21 2025
+[*]
+[dumpfile] "/home/a.dolmeta/cva6/verif/sim/out_2025-02-18/veri-testharness_sim/sbox_test.cv64a6_imafdc_sv39.vcd"
+[dumpfile_mtime] "Tue Feb 18 14:07:25 2025"
+[dumpfile_size] 111452027
+[savefile] "/home/a.dolmeta/cva6/ad_tests/wave_sbox.gtkw"
+[timestart] 0
+[size] 2560 1369
+[pos] -2751 -486
+*0.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] ariane_testharness.
+[treeopen] ariane_testharness.i_ariane.
+[treeopen] ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.
+[sst_width] 370
+[signals_width] 206
+[sst_expanded] 1
+[sst_vpaned_height] 422
+@29
+[color] 1
+ariane_testharness.i_trigger.trigger_o
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.NrRgprPorts[31:0]
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.XLEN[31:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.alu_valid
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.clk_i
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.compressed_ready
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.compressed_valid
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.hartid[63:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.id[2:0]
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.issue_hartid[63:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.issue_id[2:0]
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.issue_rd[4:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.issue_ready
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.issue_valid
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.opcode[3:0]
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.rd[4:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.register_valid
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.registers[0][63:0]
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.registers[1][63:0]
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.result[63:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.rst_ni
+@22
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.sbox_result_o[63:0]
+@28
+ariane_testharness.i_ariane.cvxif_sbox_example_coprocessor.i_cvxif_sbox_coprocessor.we
+[pattern_trace] 1
+[pattern_trace] 0
