@@ -79,8 +79,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 0\n"
-        "aes64ks2  x0, x15, x17\n"
+        "aes64ks1i x9, x12, 0\n"
+        "aes64ks2  x0, x12, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
         // Add-Key RK1
@@ -92,16 +92,16 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x10, x19\n"
 
         //aes64-esm 2nd share
-        "aes64esm x0, x14, x20\n"
-        "aes64esm x0, x11, x20\n"
+        "aes64esm x0, x14, x21\n"
+        "aes64esm x0, x11, x21\n"
 
         //Key Expansion 2 -----------------------
         "aes64ks1i x7, x15, 1\n"
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 1\n"
-        "aes64ks2  x0, x15, x17\n"
+        "aes64ks1i x9, x12, 1\n"
+        "aes64ks2  x0, x12, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
         // Add-Key RK2
@@ -121,8 +121,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64ks2  x0, x15, x16\n"
         "aes64ks2  x0, x16, x13\n"
 
-        "aes64ks1i x9, x15, 2\n"
-        "aes64ks2  x0, x15, x17\n"
+        "aes64ks1i x9, x12, 2\n"
+        "aes64ks2  x0, x12, x17\n"
         "aes64ks2  x0, x17, x18\n"
 
         // Add-Key RK3
@@ -134,8 +134,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x10, x19\n"
 
         //aes64-esm 2nd share
-        "aes64esm x0, x14, x20\n"
-        "aes64esm x0, x11, x20\n"
+        "aes64esm x0, x14, x21\n"
+        "aes64esm x0, x11, x21\n"
 
         //Key Expansion 4 -----------------------
         "aes64ks1i x7, x15, 3\n"
@@ -176,8 +176,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x10, x19\n"
 
         //aes64-esm 2nd share
-        "aes64esm x0, x14, x20\n"
-        "aes64esm x0, x11, x20\n"
+        "aes64esm x0, x14, x21\n"
+        "aes64esm x0, x11, x21\n"
 
         //Key Expansion 6 -----------------------
         "aes64ks1i x7, x15, 5\n"
@@ -218,8 +218,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64esm x0, x10, x19\n"
 
         //aes64-esm 2nd share
-        "aes64esm x0, x14, x20\n"
-        "aes64esm x0, x11, x20\n"
+        "aes64esm x0, x14, x21\n"
+        "aes64esm x0, x11, x21\n"
 
         //Key Expansion 8 -----------------------
         "aes64ks1i x7, x15, 7\n"
@@ -260,8 +260,8 @@ void AES_ENC_masked(uint32_t* state,  uint8_t* Key)
         "aes64es x0, x10, x19\n"
 
         //aes64-es 2nd share
-        "aes64esm x0, x14, x20\n"
-        "aes64esm x0, x11, x20\n"
+        "aes64esm x0, x14, x21\n"
+        "aes64esm x0, x11, x21\n"
 
         //Key Expansion 10 -----------------------
         "aes64ks1i x7, x15, 9\n"
